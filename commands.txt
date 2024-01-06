@@ -1,0 +1,5 @@
+start - Primero te saludo.
+bcba - Consultá la Bolsa de Comercio de Buenos Aires.
+cancel - Cancelá una interacción.
+error - Reportá un error.
+help - Pedí ayuda.
