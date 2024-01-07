@@ -61,7 +61,9 @@ this case I need to mention:
 Proprietary software has helped here too. I must especially mention [DeepL translator](https://www.deepl.com/translator).
 Even though I know English, it has helped me a lot to translate the content of **azarte_bot**.  
 
-Data of stock prices are retri
+Data of stock prices are retrieve from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
+seconds to execute each query. The idea is to get some information you need directly the go assuming you can access the
+platform of your choice to get real-time information.  
 
 Reach **MERC's Harvey bot** [here](https://t.me/mercsharvey_bot).
 Feel free to contact me by [mail](mailto:rodrigovalla@protonmail.ch) or reach me in
