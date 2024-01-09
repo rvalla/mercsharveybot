@@ -1,4 +1,4 @@
-![logo](https://gitlab.com/rodrigovalla/mercsharveybot/-/raw/themoststable/public/assets/img/icon_64.png)
+![logo](https://gitlab.com/rodrigovalla/mercsharveybot/-/raw/themoststable/assets/img/icon_64.png)
 
 # MERC's Harvey Bot
 
