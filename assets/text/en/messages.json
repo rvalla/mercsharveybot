@@ -1,0 +1,23 @@
+{
+	"bot_name": "MERC's Harvey Bot",
+	"start": "Hello, I am <b>MERC's Harvey Bot</b>. I am not that Harvey who used to work at <b>Chicago Mercantile Exchange</b> but I will try to be useful.",
+	"start_about": "I will look for some information of your symbols in my database.",
+	"refuse_about": "I found your symbol but can't tell you any interesting information about it.",
+	"error_about": "I am sorry but I couldn't find that symbol.",
+	"start_check": "I am ready to receive your favourites symbols. I will try to check its last price.",
+	"info_check": "I am going to check the <b>Invertir Online</b> website. Note that I will wait between 2 and 5 seconds to execute each query.",
+	"error_check": "I couldn't find that symbol. Please check it.",
+	"set_list_1": "Let's set a new watchlist. You are going to send me your prefered symbols. I will check if I find them.",
+	"set_list_2": "Please, send me first your favourites symbols of the <b>Bolsa de Comercio de Buenos Aires</b>. Send me OK when you are done.",
+	"set_list_3": "Now you can send me your favourites symbols of the rest of the world. Send me OK when you are done.",
+	"set_list_4": "Your watchlist is ready. Send me /list to check it.",
+	"error_list": "You don't have a saved watchlist at the moment. Try to set one.",
+	"language": "Please, select your prefered language.",
+	"language2": "Note that this bot does not store any persistent data from you. If the bot is restarted it will be forget your preference. In that case, be patient and send <b>/language</b> again.",
+	"language3": "I will try speak en english now...",
+	"submit_error_1": "Please tell me which command the error you are reporting is related to.",
+	"submit_error_2": "Tell me briefly what the error you found is about.",
+	"submit_error_3": "Thank you so much for taking a minute to make me better. Hopefully @rvalla will fix me soon.",
+	"end_conversation": "I terminated our conversation sesion.",
+	"intruder": "This is a secret command. You are not authorized to use it."
+}
