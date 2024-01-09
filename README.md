@@ -1,4 +1,4 @@
-![logo](https://gitlab.com/azarte/azarte.gitlab.io/-/raw/master/public/assets/img/logo_64.png)
+![logo](https://gitlab.com/rodrigovalla/mercsharveybot/-/raw/themoststable/public/assets/img/logo_64.png)
 
 # MERC's Harvey Bot
 
@@ -14,18 +14,13 @@ be running in a *virtual machine* from [Oracle Cloud Infrastructure](https://www
 
 Here you can see the list of available commands. Some of them allow you to pass parameters.
 
-- **/start**: returns simply a greeting.  
-- **/color**: starts the visual alternatives.
-- **/text**: starts the textual alternatives.  
-- **/noise**: starts the auditive alternatives.  
-- **/interaction**: the bot creates from something you send.
-- **/genuary**: the command to enter the artificially generated month of time where we build code that makes beautiful things.  
-- **/number f**: returns a random number rolling a dice with *f* faces.  
-- **/sequence f n**: returns a random sequence of *n* numbers rolling a dice with *f* faces.  
-- **/choice a b c**: returns a random word from your message.
-- **/qatar teama teamb**: the bot propose a result for a football match.  
-- **/language**: to set the bot language, Spanish (default) or English.
-- **/help**: returns a link to bring you here.  
+- **/start**: returns simply a gretting.  
+- **/about**: to check information in the database.
+- **/bcba**: set up a session to check stocks in Buenos Aires.  
+- **/world**: set up a session to check international stocks.  
+- **/help**: returns some explanations.  
+- **/language**: to set the language.  
+- **/cancel**: to terminate conversation sessions.  
 
 ## running the code
 
@@ -57,9 +52,6 @@ this case I need to mention:
 
 - [**Python**](https://www.python.org/): the programming language I used.  
 - [**python-telegram-bot**](https://python-telegram-bot.org/): the library I used to contact the *Telegram API*.  
-
-Proprietary software has helped here too. I must especially mention [DeepL translator](https://www.deepl.com/translator).
-Even though I know English, it has helped me a lot to translate the content of **azarte_bot**.  
 
 Data of stock prices are retrieve from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
 seconds to execute each query. The idea is to get some information you need directly the go assuming you can access the
