@@ -10,9 +10,12 @@ First steps setting the bot. The **bot** is in
 The **bot** initial commands are:
 
 - **/start**: returns simply a gretting.  
-- **/check**: set up a session to consult quotes.  
+- **/about**: to check information in the database.
+- **/bcba**: set up a session to check stocks in Buenos Aires.  
+- **/world**: set up a session to check international stocks.  
 - **/help**: returns some explanations.  
-- **/cancel**: to stop interactions.  
+- **/language**: to set the language.  
+- **/cancel**: to terminate conversation sessions.    
 
 Reach **MERC's Harvey bot** [here](https://t.me/mercsharvey_bot).
 Feel free to contact me by [mail](mailto:rodrigovalla@protonmail.ch) or reach me in
