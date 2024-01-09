@@ -1,5 +1,8 @@
 start - Primero te saludo.
-bcba - Consultá la Bolsa de Comercio de Buenos Aires.
+about - Acerca de las empresas.
+bcba - Consultá la BCBA.
+world - Consultá otros mercados.
 cancel - Cancelá una interacción.
 error - Reportá un error.
+language - Elegí qué idioma uso.
 help - Pedí ayuda.
