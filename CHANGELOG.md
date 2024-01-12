@@ -2,6 +2,18 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-01-12: v0.2 beta
+
+The **bot** is running now. There are several improvements for this *beta* state.
+The users can set up a watchlist now (there is a new **Users()** class related to that).
+I added some animated emojis to get more beautiful messages.
+
+New commands:
+
+- **setlist**: to set up a watchlist.
+- **list**: to check your watchlist.
+- **info**: to print extra information about the bot.
+
 ## 2024-01-05: v0.1 alpha
 
 First steps setting the bot. The **bot** is in

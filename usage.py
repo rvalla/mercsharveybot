@@ -18,6 +18,7 @@ class Usage():
 		self.portfolio = [0,0,0,0] #check, buy, sell, errors...
 		self.language = [0,0] #spanish, english...
 		self.help = 0
+		self.info = 0
 		self.out_of_context = 0
 		self.reports = 0
 		self.errors = 0
@@ -32,8 +33,9 @@ class Usage():
 			"portfolio: " + str(self.portfolio) + "\n" + \
 			"language: " + str(self.language) + "\n" + \
 			"help: " + str(self.help) + "\n" + \
-			"out of context: " + str(self.out_of_context) + "\n" \
-			"error reports: " + str(self.reports) + "\n" \
+			"info: " + str(self.info) + "\n" + \
+			"out of context: " + str(self.out_of_context) + "\n" + \
+			"error reports: " + str(self.reports) + "\n" + \
 			"errors: " + str(self.errors) + "\n"
 		return m
 
@@ -60,6 +62,7 @@ class Usage():
 		line += str(self.portfolio) + ";"
 		line += str(self.language) + ";"
 		line += str(self.help) + ";"
+		line += str(self.info) + ";"
 		line += str(self.out_of_context) + ";"
 		line += str(self.reports) + ";"
 		line += str(self.errors) + "\n"
@@ -92,10 +95,14 @@ class Usage():
 	#Registering a new help...
 	def add_help(self):
 		self.help += 1
+	
+	#Registering a new info...
+	def add_info(self):
+		self.info += 1
 
 	#Registering a new wrong_message...
 	def add_outofcontext(self):
-		self.wrong_message += 1
+		self.out_of_context += 1
 	
 	#Registering a new wrong_message...
 	def add_error_report(self):
@@ -111,8 +118,11 @@ class Usage():
 		t = dt.datetime.now()
 		date = str(t.year) + "-" + str(t.month) + "-" + str(t.day)
 		file.write(date)
+		file.write(";")
 		file.write(command)
+		file.write(";")
 		file.write(description)
+		file.write(";")
 		file.write(user + "\n")
 		file.close()
 

@@ -18,6 +18,9 @@ Here you can see the list of available commands. Some of them allow you to pass 
 - **/about**: to check information in the database.
 - **/bcba**: set up a session to check stocks in Buenos Aires.  
 - **/world**: set up a session to check international stocks.  
+- **/setlist**: to set up a watchlist.  
+- **/list**: to check the saved watchlist.  
+- **/info**: to known more about the bot.  
 - **/help**: returns some explanations.  
 - **/language**: to set the language.  
 - **/cancel**: to terminate conversation sessions.  

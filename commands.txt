@@ -2,7 +2,10 @@ start - Primero te saludo.
 about - Acerca de las empresas.
 bcba - Consultá la BCBA.
 world - Consultá otros mercados.
+setlist - Armá tu watchlist.
+list - Chequeá to watchlist.
 cancel - Cancelá una interacción.
 error - Reportá un error.
 language - Elegí qué idioma uso.
+info - Enterate más.
 help - Pedí ayuda.

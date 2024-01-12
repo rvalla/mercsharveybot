@@ -45,6 +45,15 @@ class Markets():
         except:
             return None
     
+    #Checking if a symbol is in the database...
+    def is_symbol_in_database(self, exchange, symbol):
+        is_in = False
+        if exchange == "BCBA":
+            is_in = symbol in self.bcba
+        elif exchange == "WORLD":
+            is_in = symbol in self.world
+        return is_in
+
     #Looking for the last price of a symbol at iol website...
     def get_last_info(self, exchange, symbol):
         self.pause(2, 5) #To avoid requesting the website a lot...
@@ -63,10 +72,13 @@ class Markets():
     def get_last_info_list(self, exchanges_and_symbols):
         data = []
         for s in exchanges_and_symbols:
-            self.pause(0.5, 3)
-            table = self.get_symbol_table(s[0], s[1])
-            last_p, variation_p, variation_q = self.get_symbol_price_and_variation(s[0], table)
-            data.append([s[0], s[1], last_p, variation_p, variation_q])
+            self.pause(1, 3)
+            try:
+                table = self.get_symbol_table(s[0], s[1])
+                last_p, variation_p, variation_q = self.get_symbol_price_and_variation(s[0], table)
+                data.append([s[0], s[1], last_p, variation_p, variation_q])
+            except:
+                pass
         return data
 
     #Building the correct url for symbol...
