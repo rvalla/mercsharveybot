@@ -271,8 +271,8 @@ async def save_usage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 #Testing things...
 async def debug(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	id = update.effective_chat.id
-	for k, v in msg.emojis.items():
-		await context.bot.send_message(chat_id=id, text=v, parse_mode=ParseMode.HTML)
+	message = update.message.text
+	await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
 
 #Notifying the user about out of context conversation...
 async def out_of_context(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -323,7 +323,7 @@ def main() -> None:
 		logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 	print("Ready to build the bot...", end="\n")
 	app = Application.builder().token(config["token"]).build()
-	#app.add_error_handler(error_notification)
+	app.add_error_handler(error_notification)
 	app.add_handler(CommandHandler("start", start), group=2)
 	app.add_handler(CommandHandler("list", user_list), group=2)
 	app.add_handler(CommandHandler("language", select_language), group=2)
