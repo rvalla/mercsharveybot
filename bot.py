@@ -66,18 +66,18 @@ async def get_about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 #Starting a checking prices session...
 async def trigger_check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	id = update.effective_chat.id
-	exchange = update.message.text.upper().split(" ")[0][1:]
+	exchange = update.message.text.upper().split(" ")[0].split("@")[0][1:]
 	logging.info(str(hide_id(id)) + " starts checking conversation...")
 	await context.bot.send_message(chat_id=id, text=msg.get_message("start_check", get_language(id)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=id, text=msg.get_message("info_check", get_language(id)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
-	context.user_data["actual_exchange"] = exchange
+	context.chat_data["actual_exchange"] = exchange
 	return CHECKING
 
 #Looking for the last price for the sent symbol...
 async def get_last_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	id = update.effective_chat.id
-	exchange = context.user_data["actual_exchange"]
+	exchange = context.chat_data["actual_exchange"]
 	symbol = update.message.text.upper()
 	try:
 		data = mk.get_last_info(exchange, symbol)
@@ -96,7 +96,7 @@ async def trigger_setlist(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 	await context.bot.send_message(chat_id=id, text=msg.get_message("set_list_1", get_language(id)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=id, text=msg.get_message("set_list_2", get_language(id)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=id, text=msg.get_working_emoji(), parse_mode=ParseMode.HTML)
-	context.user_data["watchlist"] = []
+	context.chat_data["watchlist"] = []
 	return SETLIST_BCBA
 
 #Adding BCBA symbols to watchlist...
@@ -105,7 +105,7 @@ async def add_bcba_symbol_to_list(update: Update, context: ContextTypes.DEFAULT_
 	symbol = update.message.text.upper()
 	if not symbol == "OK":
 		if mk.is_symbol_in_database("BCBA", symbol):
-			context.user_data["watchlist"].append(("BCBA", symbol))
+			context.chat_data["watchlist"].append(("BCBA", symbol))
 			await context.bot.send_message(chat_id=id, text=msg.get_success(get_language(id)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(id)), parse_mode=ParseMode.HTML)
@@ -120,13 +120,13 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 	symbol = update.message.text.upper()
 	if not symbol == "OK":
 		if mk.is_symbol_in_database("WORLD", symbol):
-			context.user_data["watchlist"].append(("WORLD", symbol))
+			context.chat_data["watchlist"].append(("WORLD", symbol))
 			await context.bot.send_message(chat_id=id, text=msg.get_success(get_language(id)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(id)), parse_mode=ParseMode.HTML)
 		return SETLIST_WORLD
 	else:
-		users.save_user_list(id, context.user_data["watchlist"])
+		users.save_user_list(id, context.chat_data["watchlist"])
 		await context.bot.send_message(chat_id=id, text=msg.get_message("set_list_4", get_language(id)), parse_mode=ParseMode.HTML)
 		await context.bot.send_message(chat_id=id, text=msg.get_done_emoji(), parse_mode=ParseMode.HTML)
 		return ConversationHandler.END
@@ -134,12 +134,12 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 #Sending and updated watchlist to the user...
 async def user_list(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	id = update.effective_chat.id
-	if not "watchlist" in context.user_data:
-		context.user_data["watchlist"] = users.load_user_list(id)
-	if not context.user_data["watchlist"] == None:
+	if not "watchlist" in context.chat_data:
+		context.chat_data["watchlist"] = users.load_user_list(id)
+	if not context.chat_data["watchlist"] == None:
 		await context.bot.send_message(chat_id=id, text=msg.get_message("start_list", get_language(id)), parse_mode=ParseMode.HTML)
 		await context.bot.send_message(chat_id=id, text=msg.get_long_wait_emoji(), parse_mode=ParseMode.HTML)
-		data = mk.get_last_info_list(context.user_data["watchlist"])
+		data = mk.get_last_info_list(context.chat_data["watchlist"])
 		message = msg.build_last_info_list_message(data)
 		await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
 		us.add_list(1)
