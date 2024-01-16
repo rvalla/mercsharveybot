@@ -8,25 +8,39 @@ class Markets():
 
     def __init__(self):
         self.iol = "https://iol.invertironline.com/titulo/cotizacion/"
-        self.lnd = "https://www.lanacion.com.ar/dolar-hoy/"
+        self.cro = "https://www.cronista.com/MercadosOnline/dolar.html"
         self.dolar_ar = {} #here the class stores dolar quotes in Argentina
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
 
     #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
-        self.pause(1,3)
-        page = requests.get(self.lnd).text
+        self.pause(2,4)
+        page = requests.get(self.cro).text
         page_soup = BeautifulSoup(page, "html.parser")
-        quotes = page_soup.find_all("strong", class_="--fourxs")
-        self.dolar_ar["oficial_c"] = self.get_dolar_ar_price(quotes[0].text)
-        self.dolar_ar["oficial_v"] = self.get_dolar_ar_price(quotes[1].text)
-        self.dolar_ar["mep"] = self.get_dolar_ar_price(quotes[6].text)
-        self.dolar_ar["ccl"] = self.get_dolar_ar_price(quotes[7].text)
-        self.dolar_ar["mayorista"] = self.get_dolar_ar_price(quotes[8].text)
+        variation = page_soup.find_all("td", class_="percentage")
+        buy = page_soup.find_all("div", class_="buy-value")
+        sell = page_soup.find_all("div", class_="sell-value")   
+        self.dolar_ar["bna_b"] = self.get_dolar_price(buy[0].text)
+        self.dolar_ar["bna_s"] = self.get_dolar_price(sell[0].text)
+        self.dolar_ar["bna_v"] = self.get_dolar_variation(variation[0].text)
+        self.dolar_ar["mep_b"] = self.get_dolar_price(buy[2].text)
+        self.dolar_ar["mep_s"] = self.get_dolar_price(sell[2].text)
+        self.dolar_ar["mep_v"] = self.get_dolar_variation(variation[2].text)
+        self.dolar_ar["ccl_b"] = self.get_dolar_price(buy[4].text)
+        self.dolar_ar["ccl_s"] = self.get_dolar_price(sell[4].text)
+        self.dolar_ar["ccl_v"] = self.get_dolar_variation(variation[4].text)
+        self.dolar_ar["mayorista_b"] = self.get_dolar_price(buy[3].text)
+        self.dolar_ar["mayorista_s"] = self.get_dolar_price(sell[3].text)
+        self.dolar_ar["mayorista_v"] = self.get_dolar_variation(variation[3].text)
 
-    #Extracting prices from quotes...
-    def get_dolar_ar_price(self, data):
-        number_str = data.replace("$", "").replace(",", ".")
+    #Extracting prices from text...
+    def get_dolar_price(self, data):
+        number_str = data.replace("$", "").replace(".", "").replace(",", ".")
+        return float(number_str)
+    
+    #Extracting variations from text...
+    def get_dolar_variation(self, data):
+        number_str = data.replace(",", ".").replace("%", "")
         return float(number_str)
 
     #Loading info to database...

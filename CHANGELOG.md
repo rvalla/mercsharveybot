@@ -2,6 +2,10 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-01-16: v0.3 beta
+
+The **bot** has a new **/dolar** command. New symbols were added to the database.  
+
 ## 2024-01-12: v0.2 beta
 
 The **bot** is running now. There are several improvements for this *beta* state.

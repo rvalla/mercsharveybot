@@ -103,7 +103,7 @@ class Messages():
 			m += "Variación: " + self.get_price_str(exchange, data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
 			m += "Volumen: " + self.get_price_str(exchange, data[5]) + "\n"
 		else:
-			m += "Last price: <b>" + self.get_price_str(exchange, data[2]) + "</b>" + self.get_variation_arrow(data[3]) + "\n"
+			m += "Last price: <b>" + self.get_price_str(exchange, data[2]) + "</b> " + self.get_variation_arrow(data[3]) + "\n"
 			m += "Variation: " + self.get_price_str(exchange, data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
 			m += "Volume: " + self.get_price_str(exchange, data[5]) + "\n"
 		return m
@@ -126,15 +126,15 @@ class Messages():
 	#To format last dolar quotes in Argentina (needs data from Market())...
 	def build_dolar_message(self, dolar, l):
 		m = ""
+		m += "<b>BNA</b>: " +  self.get_price_str("BCBA", dolar["bna_b"]) + " - " + self.get_price_str("BCBA", dolar["bna_s"]) + " " + \
+				self.get_variation_str(dolar["bna_v"]) + self.get_variation_arrow(dolar["bna_v"]) + "\n"
+		m += "<b>MEP</b>: " +  self.get_price_str("BCBA", dolar["mep_s"]) + " "  + \
+				self.get_variation_str(dolar["mep_v"]) + self.get_variation_arrow(dolar["mep_v"]) + "\n"
+		m += "<b>CCL</b>: " +  self.get_price_str("BCBA", dolar["ccl_s"]) + " " + \
+				self.get_variation_str(dolar["ccl_v"]) + self.get_variation_arrow(dolar["ccl_v"]) + "\n"
 		if l == 0:
-			m += "<b>Oficial</b>: " +  self.get_price_str("BCBA", dolar["oficial_c"]) + " - <b>" + self.get_price_str("BCBA", dolar["oficial_v"]) + "</b>\n"
-			m += "<b>Mayorista</b>: " +  self.get_price_str("BCBA", dolar["mayorista"]) + "\n"
-			m += "<b>MEP: " +  self.get_price_str("BCBA", dolar["mep"]) + "</b>\n"
-			m += "<b>CCL</b>: " +  self.get_price_str("BCBA", dolar["ccl"])
-		else:
-			m += "<b>Official</b>: " +  self.get_price_str("BCBA", dolar["oficial_c"]) + " - " + self.get_price_str("BCBA", dolar["oficial_v"]) + "\n"
-			m += "<b>MEP</b>: " +  self.get_price_str("BCBA", dolar["mep"]) + "\n"
-			m += "<b>CCL: " +  self.get_price_str("BCBA", dolar["ccl"]) + "</b>"
+			m += "<b>Mayorista</b>: " +  self.get_price_str("BCBA", dolar["mayorista_s"]) + " " +\
+					self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
 		return m
 
 	#To format a watchlist...
