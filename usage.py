@@ -14,6 +14,7 @@ class Usage():
 		self.start = 0
 		self.about = [0,0] #success, errors...
 		self.check = [0,0]
+		self.dolar = [0,0]
 		self.list = [0,0,0] #set, check, errors...
 		self.portfolio = [0,0,0,0] #check, buy, sell, errors...
 		self.language = [0,0] #spanish, english...
@@ -29,6 +30,7 @@ class Usage():
 			"start: " + str(self.start) + "\n" + \
 			"about: " + str(self.about) + "\n" + \
 			"check: " + str(self.check) + "\n" + \
+			"dolar: " + str(self.dolar) + "\n" + \
 			"list: " + str(self.list) + "\n" + \
 			"portfolio: " + str(self.portfolio) + "\n" + \
 			"language: " + str(self.language) + "\n" + \
@@ -58,6 +60,7 @@ class Usage():
 		line += str(self.start) + ";"
 		line += str(self.about) + ";"
 		line += str(self.check) + ";"
+		line += str(self.dolar) + ";"
 		line += str(self.list) + ";"
 		line += str(self.portfolio) + ";"
 		line += str(self.language) + ";"
@@ -76,9 +79,13 @@ class Usage():
 	def add_about(self, key):
 		self.about[key] += 1
 
-	#Registering a new bcba...
+	#Registering a new check...
 	def add_check(self, key):
 		self.check[key] += 1
+	
+	#Registering a new dolar...
+	def add_dolar(self, key):
+		self.dolar[key] += 1
 
 	#Registering a new noise...
 	def add_list(self, key):

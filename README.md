@@ -18,6 +18,7 @@ Here you can see the list of available commands. Some of them allow you to pass 
 - **/about**: to check information in the database.
 - **/bcba**: set up a session to check stocks in Buenos Aires.  
 - **/world**: set up a session to check international stocks.  
+- **/dolar**: to check last us dolar prices in Argentina.
 - **/setlist**: to set up a watchlist.  
 - **/list**: to check the saved watchlist.  
 - **/info**: to known more about the bot.  
@@ -58,7 +59,8 @@ this case I need to mention:
 
 Data of stock prices are retrieve from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
 seconds to execute each query. The idea is to get some information you need directly the go assuming you can access the
-platform of your choice to get real-time information.  
+platform of your choice to get real-time information. Data about us dolar quotes in Argentina are retrive from
+[La Nación](https://www.lanacion.com.ar/dolar-hoy/).  
 
 Reach **MERC's Harvey bot** [here](https://t.me/mercsharvey_bot).
 Feel free to contact me by [mail](mailto:rodrigovalla@protonmail.ch) or reach me in

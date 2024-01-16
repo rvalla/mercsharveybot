@@ -8,7 +8,26 @@ class Markets():
 
     def __init__(self):
         self.iol = "https://iol.invertironline.com/titulo/cotizacion/"
+        self.lnd = "https://www.lanacion.com.ar/dolar-hoy/"
+        self.dolar_ar = {} #here the class stores dolar quotes in Argentina
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
+
+    #Looking for dolar quotes in Argentina...
+    def update_dolar_ar(self):
+        self.pause(1,3)
+        page = requests.get(self.lnd).text
+        page_soup = BeautifulSoup(page, "html.parser")
+        quotes = page_soup.find_all("strong", class_="--fourxs")
+        self.dolar_ar["oficial_c"] = self.get_dolar_ar_price(quotes[0].text)
+        self.dolar_ar["oficial_v"] = self.get_dolar_ar_price(quotes[1].text)
+        self.dolar_ar["mep"] = self.get_dolar_ar_price(quotes[6].text)
+        self.dolar_ar["ccl"] = self.get_dolar_ar_price(quotes[7].text)
+        self.dolar_ar["mayorista"] = self.get_dolar_ar_price(quotes[8].text)
+
+    #Extracting prices from quotes...
+    def get_dolar_ar_price(self, data):
+        number_str = data.replace("$", "").replace(",", ".")
+        return float(number_str)
 
     #Loading info to database...
     def load_tickers(self, data):

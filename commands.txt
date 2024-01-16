@@ -2,6 +2,7 @@ start - Primero te saludo.
 about - Acerca de las empresas.
 bcba - Consultá la BCBA.
 world - Consultá otros mercados.
+dolar - Consultá distintas cotizaciones.
 setlist - Armá tu watchlist.
 list - Chequeá to watchlist.
 cancel - Cancelá una interacción.

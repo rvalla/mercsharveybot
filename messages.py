@@ -123,6 +123,20 @@ class Messages():
 			arrow = self.get_emoji("arrow_upup")
 		return arrow
 
+	#To format last dolar quotes in Argentina (needs data from Market())...
+	def build_dolar_message(self, dolar, l):
+		m = ""
+		if l == 0:
+			m += "<b>Oficial</b>: " +  self.get_price_str("BCBA", dolar["oficial_c"]) + " - <b>" + self.get_price_str("BCBA", dolar["oficial_v"]) + "</b>\n"
+			m += "<b>Mayorista</b>: " +  self.get_price_str("BCBA", dolar["mayorista"]) + "\n"
+			m += "<b>MEP: " +  self.get_price_str("BCBA", dolar["mep"]) + "</b>\n"
+			m += "<b>CCL</b>: " +  self.get_price_str("BCBA", dolar["ccl"])
+		else:
+			m += "<b>Official</b>: " +  self.get_price_str("BCBA", dolar["oficial_c"]) + " - " + self.get_price_str("BCBA", dolar["oficial_v"]) + "\n"
+			m += "<b>MEP</b>: " +  self.get_price_str("BCBA", dolar["mep"]) + "\n"
+			m += "<b>CCL: " +  self.get_price_str("BCBA", dolar["ccl"]) + "</b>"
+		return m
+
 	#To format a watchlist...
 	def build_last_info_list_message(self, data):
 		m = ""

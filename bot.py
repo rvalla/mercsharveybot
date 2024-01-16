@@ -129,9 +129,24 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 		users.save_user_list(id, context.chat_data["watchlist"])
 		await context.bot.send_message(chat_id=id, text=msg.get_message("set_list_4", get_language(id)), parse_mode=ParseMode.HTML)
 		await context.bot.send_message(chat_id=id, text=msg.get_done_emoji(), parse_mode=ParseMode.HTML)
+		us.add_list(0)
 		return ConversationHandler.END
 
-#Sending and updated watchlist to the user...
+#Looking for last data for us dolar quotes in Argentina...
+async def get_last_dolar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+	id = update.effective_chat.id
+	try:
+		await context.bot.send_message(chat_id=id, text=msg.get_message("start_dolar", get_language(id)), parse_mode=ParseMode.HTML)
+		await context.bot.send_message(chat_id=id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
+		mk.update_dolar_ar()
+		message = msg.build_dolar_message(mk.dolar_ar, get_language(id))
+		await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
+		us.add_dolar(0)
+	except:
+		await context.bot.send_message(chat_id=id, text=msg.get_message("error_dolar", get_language(id)), parse_mode=ParseMode.HTML)
+		us.add_dolar(1)
+
+#Sending an updated watchlist to the user...
 async def user_list(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	id = update.effective_chat.id
 	if not "watchlist" in context.chat_data:
@@ -199,7 +214,7 @@ async def print_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 #Sending an info message...
 async def print_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " asked for help...")
+	logging.info(str(hide_id(id)) + " asked for info...")
 	us.add_info()
 	m = msg.build_info_message(get_language(id))
 	await context.bot.send_message(chat_id=id, text=m, parse_mode=ParseMode.HTML)
@@ -240,11 +255,11 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE, query
 #Handling default clicks on InlineKeyboardButtons...
 async def default_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	query = update.callback_query
-	query.answer()
+	await query.answer()
 	if query.data.startswith("l"):
 		await set_language(update, context, query.data)
 	else:
-		await logging.info("Strange query from button recieved!")
+		logging.info("Strange query from button recieved!")
 
 #Sending usage data...
 async def bot_usage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -325,6 +340,7 @@ def main() -> None:
 	app = Application.builder().token(config["token"]).build()
 	app.add_error_handler(error_notification)
 	app.add_handler(CommandHandler("start", start), group=2)
+	app.add_handler(CommandHandler("dolar", get_last_dolar), group=2)
 	app.add_handler(CommandHandler("list", user_list), group=2)
 	app.add_handler(CommandHandler("language", select_language), group=2)
 	app.add_handler(CommandHandler("help", print_help), group=2)
