@@ -126,15 +126,17 @@ class Messages():
 	#To format last dolar quotes in Argentina (needs data from Market())...
 	def build_dolar_message(self, dolar, l):
 		m = ""
-		m += "<b>BNA</b>: " +  self.get_price_str("BCBA", dolar["bna_b"]) + " - " + self.get_price_str("BCBA", dolar["bna_s"]) + " " + \
-				self.get_variation_str(dolar["bna_v"]) + self.get_variation_arrow(dolar["bna_v"]) + "\n"
-		m += "<b>MEP</b>: " +  self.get_price_str("BCBA", dolar["mep_s"]) + " "  + \
+		names = [["BNA", "MEP", "CCL", "Blue", "Mayorista"], ["BNA", "MEP", "CCL", "Cash", "Wholesale"]]
+		m += "<b>" + names[l][1] + "</b>: " +  self.get_price_str("BCBA", dolar["mep_s"]) + " "  + \
 				self.get_variation_str(dolar["mep_v"]) + self.get_variation_arrow(dolar["mep_v"]) + "\n"
-		m += "<b>CCL</b>: " +  self.get_price_str("BCBA", dolar["ccl_s"]) + " " + \
-				self.get_variation_str(dolar["ccl_v"]) + self.get_variation_arrow(dolar["ccl_v"]) + "\n"
-		if l == 0:
-			m += "<b>Mayorista</b>: " +  self.get_price_str("BCBA", dolar["mayorista_s"]) + " " +\
-					self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
+		m += "<b>" + names[l][2] + "</b>: " +  self.get_price_str("BCBA", dolar["ccl_s"]) + " " + \
+				self.get_variation_str(dolar["ccl_v"]) + self.get_variation_arrow(dolar["ccl_v"]) + "\n\n"
+		m += "<b>" + names[l][0] + "</b>: " +  self.get_price_str("BCBA", dolar["bna_b"]) + " - " + self.get_price_str("BCBA", dolar["bna_s"]) + " " + \
+				self.get_variation_str(dolar["bna_v"]) + self.get_variation_arrow(dolar["bna_v"]) + "\n"
+		m += "<b>" + names[l][3] + "</b>: " +  self.get_price_str("BCBA", dolar["blue_b"]) + " - " + self.get_price_str("BCBA", dolar["blue_s"]) + " " + \
+				self.get_variation_str(dolar["blue_v"]) + self.get_variation_arrow(dolar["blue_v"]) + "\n"
+		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("BCBA", dolar["mayorista_s"]) + " " +\
+				self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
 		return m
 
 	#To format a watchlist...

@@ -323,8 +323,8 @@ def build_general_conversation_handler():
 			ERROR_1: [MessageHandler(filters.TEXT, report_command)],
 			ERROR_2: [MessageHandler(filters.TEXT & ~filters.COMMAND, report_error)],
 		},
-		fallbacks=[MessageHandler(filters.COMMAND, end_conversation)]
-		)
+		fallbacks=[MessageHandler(filters.COMMAND, end_conversation)],
+		per_chat=True, per_user=False, per_message=False)
 	return handler
 
 #Here the magic happens...
