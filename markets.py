@@ -14,7 +14,7 @@ class Markets():
 
     #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
-        self.pause(2,4)
+        self.pause(3,5)
         page = requests.get(self.cro).text
         page_soup = BeautifulSoup(page, "html.parser")
         variation = page_soup.find_all("td", class_="percentage")

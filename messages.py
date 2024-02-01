@@ -9,6 +9,8 @@ class Messages():
 		self.msg_en = js.load(open("assets/text/en/messages.json"))
 		self.r_success_es = open("assets/text/es/random_success.txt").readlines()
 		self.r_success_en = open("assets/text/en/random_success.txt").readlines()
+		self.r_selection_es = open("assets/text/es/random_selection.txt").readlines()
+		self.r_selection_en = open("assets/text/en/random_selection.txt").readlines()
 		self.r_conversation_start_es = open("assets/text/es/random_conversation_start.txt").readlines()
 		self.r_conversation_start_en = open("assets/text/en/random_conversation_start.txt").readlines()
 		self.r_conversation_end_es = open("assets/text/es/random_conversation_end.txt").readlines()
@@ -36,6 +38,13 @@ class Messages():
 			return rd.choice(self.r_success_es)
 		else:
 			return rd.choice(self.r_success_en)
+	
+	#To get a random selection message...
+	def get_selection(self, l):
+		if l == 0:
+			return rd.choice(self.r_selection_es)
+		else:
+			return rd.choice(self.r_selection_en)
 
 	#To get a random conversation start...
 	def get_conversation_start(self, l):

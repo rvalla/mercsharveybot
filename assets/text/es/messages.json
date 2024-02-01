@@ -7,7 +7,7 @@
 	"start_check": "Estoy listo para recibir los símbolos que te interesen. Intentaré de buscar su cotización más reciente.",
 	"info_check": "Voy a consultar el sitio de <b>Invertir Online</b>. Tené en cuenta que voy a esperar entre 2 y 5 segundos para ejecutar cada consulta.",
 	"error_check": "No logro encontrar el símbolo que enviaste. Tampoco busqué tanto. Fijate si hay algún error.",
-	"start_dolar": "Veamos si encuentro las últimas cotizaciones del dólar en Argentina en el sitio de <b>El Cronista</b>. Voy a esperar entre 2 y 4 segundos para ejecutar la consulta.",
+	"start_dolar": "Veamos si encuentro las últimas cotizaciones del dólar en Argentina en el sitio de <b>El Cronista</b>. Voy a esperar entre 3 y 5 segundos para ejecutar la consulta.",
 	"error_dolar": "No pude encontrar nada. El dólar en Argentina es una locura. Capaz no queda ninguno.",
 	"set_list_1": "Vamos a configurar una lista de seguimiento. Me vas a ir enviando tus símbolos preferidos. Yo voy a chequear si los conozco.",
 	"set_list_2": "Primero mandame los símbolos que te interesen de la <b>Bolsa de Comercio de Buenos Aires</b>. Mandame OK para terminar.",

@@ -60,7 +60,7 @@ async def get_about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 		else:
 			message = msg.get_message("refuse_about", get_language(id))
 		us.add_about(1)
-	await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
+	await context.bot.send_message(chat_id=id, text=message, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 	return ABOUT
 
 #Starting a checking prices session...
@@ -106,7 +106,7 @@ async def add_bcba_symbol_to_list(update: Update, context: ContextTypes.DEFAULT_
 	if not symbol == "OK":
 		if mk.is_symbol_in_database("BCBA", symbol):
 			context.chat_data["watchlist"].append(("BCBA", symbol))
-			await context.bot.send_message(chat_id=id, text=msg.get_success(get_language(id)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=id, text=msg.get_selection(get_language(id)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(id)), parse_mode=ParseMode.HTML)
 		return SETLIST_BCBA
@@ -121,7 +121,7 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 	if not symbol == "OK":
 		if mk.is_symbol_in_database("WORLD", symbol):
 			context.chat_data["watchlist"].append(("WORLD", symbol))
-			await context.bot.send_message(chat_id=id, text=msg.get_success(get_language(id)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=id, text=msg.get_selection(get_language(id)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(id)), parse_mode=ParseMode.HTML)
 		return SETLIST_WORLD
