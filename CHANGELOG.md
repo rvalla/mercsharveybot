@@ -2,6 +2,10 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-01-31: v0.3.1 beta
+
+New *random selection messages* to make **/setlist** more funny. Updated database.  
+
 ## 2024-01-16: v0.3 beta
 
 The **bot** has a new **/dolar** command. New symbols were added to the database.  
