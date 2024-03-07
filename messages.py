@@ -19,6 +19,8 @@ class Messages():
 		self.r_error_message_en = open("assets/text/en/random_apologies.txt").readlines()
 		self.r_outofcontext_es = open("assets/text/es/random_outofcontext.txt").readlines()
 		self.r_outofcontext_en = open("assets/text/en/random_outofcontext.txt").readlines()
+		self.r_buttonwanted_es = open("assets/text/es/random_buttonwanted.txt").readlines()
+		self.r_buttonwanted_en = open("assets/text/en/random_buttonwanted.txt").readlines()
 		self.emojis = self.load_emojis(open("assets/html_emojis.txt").readlines()[1:])
 		self.analysis_emoji = ["up_trend", "down_trend", "bar_chart", "crystal_ball", "magnifying_glass", "abacus"]
 		self.long_waits_emoji = ["sand_clock", "mate", "cocktail", "tropical", "whisky", "coffee", "soda"]
@@ -73,6 +75,13 @@ class Messages():
 			return rd.choice(self.r_outofcontext_es)
 		else:
 			return rd.choice(self.r_outofcontext_en)
+	
+	#To get a random out of context button...
+	def get_button_wanted(self, l):
+		if l == 0:
+			return rd.choice(self.r_buttonwanted_es)
+		else:
+			return rd.choice(self.r_buttonwanted_en)
 	
 	#To get a html formated emoji...
 	def get_emoji(self, key):

@@ -3,8 +3,9 @@ about - Acerca de las empresas.
 bcba - Consultá la BCBA.
 world - Consultá otros mercados.
 dolar - Consultá distintas cotizaciones.
-setlist - Armá tu watchlist.
-list - Chequeá to watchlist.
+watchlists - Chequeá tus watchlists.
+setwatchlist - Armá tu watchlist.
+erasewatchlist - Eliminá una lista.
 cancel - Cancelá una interacción.
 error - Reportá un error.
 language - Elegí qué idioma uso.

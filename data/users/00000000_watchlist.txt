@@ -1,4 +1,0 @@
-exchange;symbol;
-WORLD;KO;
-WORLD;AMD;
-BCBA;ALUA;

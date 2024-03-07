@@ -2,6 +2,15 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-03-07: v0.5 beta
+
+Now the language preference is saved at *context.chat_data*. The *watchlist* implementation
+was completely redesign. Now is possible to set several watchlists. Related commands were
+updated:
+- **watchlists**: the command to check user's watchlists (it was **list** before).
+- **setwatchlist**: the commnand to set a new watchlist (it was **setlist** before).
+- **erasewatchlist**: the command to erase a watchlist.
+
 ## 2024-01-31: v0.3.1 beta
 
 New *random selection messages* to make **/setlist** more funny. Updated database.  
