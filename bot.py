@@ -115,8 +115,9 @@ async def add_bcba_symbol_to_list(update: Update, context: ContextTypes.DEFAULT_
 	id = update.effective_chat.id
 	symbol = update.message.text.upper()
 	if not symbol == "OK":
-		if mk.is_symbol_in_database("BCBA", symbol):
-			context.chat_data[context.chat_data["active_key"]].append(["BCBA", symbol])
+		is_in, currency = mk.check_symbol_and_currency("BCBA", symbol)
+		if is_in:
+			context.chat_data[context.chat_data["active_key"]].append(["BCBA", symbol, currency])
 			await context.bot.send_message(chat_id=id, text=msg.get_selection(get_language(context)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(context)), parse_mode=ParseMode.HTML)
@@ -130,8 +131,9 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 	id = update.effective_chat.id
 	symbol = update.message.text.upper()
 	if not symbol == "OK":
-		if mk.is_symbol_in_database("WORLD", symbol):
-			context.chat_data[context.chat_data["active_key"]].append(["WORLD", symbol])
+		is_in, currency = mk.check_symbol_and_currency("WORLD", symbol)
+		if is_in:
+			context.chat_data[context.chat_data["active_key"]].append(["WORLD", symbol, currency])
 			await context.bot.send_message(chat_id=id, text=msg.get_selection(get_language(context)), parse_mode=ParseMode.HTML)
 		else:
 			await context.bot.send_message(chat_id=id, text=msg.get_message("error_set_list", get_language(context)), parse_mode=ParseMode.HTML)

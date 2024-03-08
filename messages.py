@@ -117,13 +117,13 @@ class Messages():
 	def build_last_info_message(self, l, exchange, data):
 		m = self.get_symbol_name_str(data[0], data[1], data[7])
 		if l == 0:
-			m += "Último precio: <b>" + self.get_price_str(exchange, data[2]) + "</b> " + self.get_variation_arrow(data[3]) + " \n"
-			m += "Variación: " + self.get_price_str(exchange, data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
-			m += "Volumen: " + self.get_price_str(exchange, data[5]) + "\n"
+			m += "Último precio: <b>" + self.get_price_str(data[8], data[2]) + "</b> " + self.get_variation_arrow(data[3]) + " \n"
+			m += "Variación: " + self.get_price_str(data[8], data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
+			m += "Volumen: " + self.get_price_str(data[8], data[5]) + "\n"
 		else:
-			m += "Last price: <b>" + self.get_price_str(exchange, data[2]) + "</b> " + self.get_variation_arrow(data[3]) + "\n"
-			m += "Variation: " + self.get_price_str(exchange, data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
-			m += "Volume: " + self.get_price_str(exchange, data[5]) + "\n"
+			m += "Last price: <b>" + self.get_price_str(data[8], data[2]) + "</b> " + self.get_variation_arrow(data[3]) + "\n"
+			m += "Variation: " + self.get_price_str(data[8], data[4]) + " <b>" + self.get_variation_str(data[3]) + "</b>\n"
+			m += "Volume: " + self.get_price_str(data[8], data[5]) + "\n"
 		return m
 	
 	#To decide an arrow for the variation...
@@ -169,9 +169,9 @@ class Messages():
 	def get_watchlist_row(self, row):
 		m = "<b>" + row[1] + "</b>:  "
 		m += self.get_variation_arrow(row[3]) + " "
-		m += self.get_price_str(row[0], row[2]) + " <b>"
+		m += self.get_price_str(row[5], row[2]) + " <b>"
 		m += self.get_variation_str(row[3]) + "</b> ("
-		m += self.get_price_str(row[0], row[4]) + ") "
+		m += self.get_price_str(row[5], row[4]) + ") "
 		return m
 
 	#To format a company name...
@@ -183,9 +183,9 @@ class Messages():
 		return m
 
 	#To format last price...
-	def get_price_str(self, exchange, number):
+	def get_price_str(self, currency, number):
 		n = ""
-		if exchange == "BCBA":
+		if currency == "ARS":
 			n = "AR${:,.2f}".format(number)
 		else:
 			n = "U$S{:,.2f}".format(number)
@@ -203,12 +203,15 @@ class Messages():
 		m = ""
 		if l == 0:
 			m += "Podés pedirme distintas cosas. Acá te dejo los comandos disponibles:\n\n"
+			m += "> Mandame /about para consultar información acerca de tus símbolos preferidos."
 			m += "> Mandame /bcba para consultar la <b>Bolsa de Comercio de Buenos Aires</b>. "
 			m += "Intento leer los datos desde el sitio de <b>Invertir Online</b>. Podés "
 			m += "pensar este comando como una forma rápida de acceder ahí.\n"
 			m += "> Mandame /world para consultar otros mercados.\n"
-			m += "> Mandame /setlist para configurar una lista de seguimiento.\n"
-			m += "> Mandame /list para consultar tu lista de seguimiento.\n"
+			m += "> Mandame /dolar para consultar sus cotizaciones.\n"
+			m += "> Mandame /watchlists para consultar tus listas de seguimiento.\n"
+			m += "> Mandame /setwatchlist para configurar una lista de seguimiento.\n"
+			m += "> Mandame /erasewatchlist para eliminar una lista de seguimiento.\n"
 			m += "> Mandame /cancel para terminar una conversasión.\n"
 			m += "> Mandame /error para reportar cualquier error que me encuentres.\n"
 			m += "> Mandame /language para cambiar el idioma que uso.\n"
@@ -220,8 +223,8 @@ class Messages():
 			m += "I try to read the data from <b>Invertir Online</b> platform. You can think about this "
 			m += "command as a fast way to check that website.\n"
 			m += "> Send me /world to check other exchanges. "
-			m += "> Send me /setlist to set up a watchlist.\n"
-			m += "> Send me /list to check your watchlist.\n"
+			m += "> Send me /setwatchlist to set up a watchlist.\n"
+			m += "> Send me /watchlists to check your watchlist.\n"
 			m += "> Send me /cancel to terminate a conversation session.\n"
 			m += "> Send me /error to report whatever error you find on me..\n"
 			m += "> Send me /language to change the language I use.\n"

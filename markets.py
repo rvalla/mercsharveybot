@@ -68,17 +68,18 @@ class Markets():
         ticker["about_es"] = data[4]
         ticker["url"] = data[5]
         ticker["cedear_ratio"] = data[6]
-        ticker["ready"] = data[7] in ("True\n")
+        ticker["currency"] = data[7]
+        ticker["ready"] = data[8] in ("True\n")
         return ticker
 
     #Returning symbol data...
     def get_symbol(self, exchange, symbol):
-        try:
+        if self.is_symbol_in_database(exchange, symbol):
             if exchange == "BCBA":
                 return self.bcba[symbol]
             else:
                 return self.world[symbol]
-        except:
+        else:
             return None
     
     #Checking if a symbol is in the database...
@@ -89,20 +90,24 @@ class Markets():
         elif exchange == "WORLD":
             is_in = symbol in self.world
         return is_in
+    
+    #Returning if symbols is in the database and its currency...
+    def check_symbol_and_currency(self, exchange, symbol):
+        is_in = self.is_symbol_in_database(exchange, symbol)
+        if is_in:
+            currency = self.get_symbol_currency(exchange, symbol)
+        else:
+            currency = ""
+        return is_in, currency
 
     #Looking for the last price of a symbol at iol website...
     def get_last_info(self, exchange, symbol):
         self.pause(2, 5) #To avoid requesting the website a lot...
+        name, cedear_ratio, currency = self.get_symbol_name_ratio_and_currency(exchange, symbol)
         table = self.get_symbol_table(exchange, symbol)
-        last_p, variation_p, variation_q = self.get_symbol_price_and_variation(exchange, table)
-        volume_m, volume_n = self.get_symbol_volumes(exchange, table)
-        if exchange == "BCBA":
-            name = self.bcba[symbol]["name"]
-            cedear_ratio = self.bcba[symbol]["cedear_ratio"]
-        else:
-            name = self.world[symbol]["name"]
-            cedear_ratio = "-"
-        return [symbol, name, last_p, variation_p, variation_q, volume_m, volume_n, cedear_ratio]
+        last_p, variation_p, variation_q = self.get_symbol_price_and_variation(table)
+        volume_m, volume_n = self.get_symbol_volumes(currency, table)
+        return [symbol, name, last_p, variation_p, variation_q, volume_m, volume_n, cedear_ratio, currency]
     
     #Looking for the last prices of a watch list...
     def get_last_info_list(self, exchanges_and_symbols):
@@ -111,8 +116,9 @@ class Markets():
             self.pause(1, 3)
             try:
                 table = self.get_symbol_table(s[0], s[1])
-                last_p, variation_p, variation_q = self.get_symbol_price_and_variation(s[0], table)
-                data.append([s[0], s[1], last_p, variation_p, variation_q])
+                currency = s[2]
+                last_p, variation_p, variation_q = self.get_symbol_price_and_variation(table)
+                data.append([s[0], s[1], last_p, variation_p, variation_q, currency])
             except:
                 pass
         return data
@@ -132,7 +138,7 @@ class Markets():
         return table
     
     #Extracting price and variations from table...
-    def get_symbol_price_and_variation(self, exchange, table):
+    def get_symbol_price_and_variation(self, table):
         aux = table.find_all("span")
         last_p = float(aux[3].text.replace(".", "").replace(",", "."))
         variation_p = float(aux[9].text.replace(",", "."))
@@ -140,19 +146,39 @@ class Markets():
         return last_p, variation_p, variation_q
     
     #Extracting volumes from table...
-    def get_symbol_volumes(self, exchange, table):
+    def get_symbol_volumes(self, currency, table):
         aux = table.find_all("li")
         volume_m = 0
         volume_n = 0
         try:
             volume_n = int(aux[1].text.replace("Q: ", ""))
-            if exchange == "BCBA":
+            if currency == "ARS":
                 volume_m = float(aux[0].text.replace("$ ", "").replace(".", "").replace(",", ".")) 
             else:
                 volume_m = float(aux[0].text.replace("US$ ", "").replace(".", "").replace(",", "."))
         except:
             pass
         return volume_m, volume_n
+    
+    #Looking for symbol name, ratio and currency in database...
+    def get_symbol_name_ratio_and_currency(self, exchange, symbol):
+        if exchange == "BCBA":
+            name = self.bcba[symbol]["name"]
+            cedear_ratio = self.bcba[symbol]["cedear_ratio"]
+            currency  = self.bcba[symbol]["currency"]
+        else:
+            name = self.world[symbol]["name"]
+            cedear_ratio = self.world[symbol]["cedear_ratio"]
+            currency  = self.world[symbol]["currency"]
+        return name, cedear_ratio, currency
+    
+    #Looking for symbol currency in database...
+    def get_symbol_currency(self, exchange, symbol):
+        if exchange == "BCBA":
+            currency  = self.bcba[symbol]["currency"]
+        else:
+            currency  = self.world[symbol]["currency"]
+        return currency
     
     #Deciding a random pause...
     def pause(self, minimum, maximum):
