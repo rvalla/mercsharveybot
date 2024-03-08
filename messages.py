@@ -145,15 +145,15 @@ class Messages():
 	def build_dolar_message(self, dolar, l):
 		m = ""
 		names = [["BNA", "MEP", "CCL", "Blue", "Mayorista"], ["BNA", "MEP", "CCL", "Cash", "Wholesale"]]
-		m += "<b>" + names[l][1] + "</b>: " +  self.get_price_str("BCBA", dolar["mep_s"]) + " "  + \
+		m += "<b>" + names[l][1] + "</b>: " +  self.get_price_str("ARS", dolar["mep_s"]) + " "  + \
 				self.get_variation_str(dolar["mep_v"]) + self.get_variation_arrow(dolar["mep_v"]) + "\n"
-		m += "<b>" + names[l][2] + "</b>: " +  self.get_price_str("BCBA", dolar["ccl_s"]) + " " + \
+		m += "<b>" + names[l][2] + "</b>: " +  self.get_price_str("ARS", dolar["ccl_s"]) + " " + \
 				self.get_variation_str(dolar["ccl_v"]) + self.get_variation_arrow(dolar["ccl_v"]) + "\n\n"
-		m += "<b>" + names[l][0] + "</b>: " +  self.get_price_str("BCBA", dolar["bna_b"]) + " - " + self.get_price_str("BCBA", dolar["bna_s"]) + " " + \
+		m += "<b>" + names[l][0] + "</b>: " +  self.get_price_str("ARS", dolar["bna_b"]) + " - " + self.get_price_str("ARS", dolar["bna_s"]) + " " + \
 				self.get_variation_str(dolar["bna_v"]) + self.get_variation_arrow(dolar["bna_v"]) + "\n"
-		m += "<b>" + names[l][3] + "</b>: " +  self.get_price_str("BCBA", dolar["blue_b"]) + " - " + self.get_price_str("BCBA", dolar["blue_s"]) + " " + \
+		m += "<b>" + names[l][3] + "</b>: " +  self.get_price_str("ARS", dolar["blue_b"]) + " - " + self.get_price_str("ARS", dolar["blue_s"]) + " " + \
 				self.get_variation_str(dolar["blue_v"]) + self.get_variation_arrow(dolar["blue_v"]) + "\n"
-		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("BCBA", dolar["mayorista_s"]) + " " +\
+		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("ARS", dolar["mayorista_s"]) + " " +\
 				self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
 		return m
 
