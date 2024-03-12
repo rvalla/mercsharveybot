@@ -1,2 +1,2 @@
 date;command;description;user
-
+2024-3-11;setwatchlist;Cuando se cancela la configuración de una lista se acumulan en contexto.chat_data["watchlists"].;****8891

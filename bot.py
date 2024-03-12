@@ -11,6 +11,11 @@ from usage import Usage
 from messages import Messages
 from markets import Markets
 from users import Users
+from warnings import filterwarnings
+from telegram.warnings import PTBUserWarning
+
+#Filterint warnings about conversation handlers configuration...
+filterwarnings(action="ignore", message=r".*CallbackQueryHandler", category=PTBUserWarning)
 
 print("Starting MERC's Harvey Bot...", end="\n")
 config = js.load(open("config.json")) #The configuration file (token included)
@@ -105,7 +110,10 @@ async def name_for_list(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 	id = update.effective_chat.id
 	list_name = update.message.text.replace(" ", "_").lower()
 	context.chat_data["active_key"] = "wl_" + list_name
-	context.chat_data["watchlists"].append(list_name)
+	if list_name in context.chat_data["watchlists"]:
+		await context.bot.send_message(chat_id=id, text=msg.get_message("overwrite_set_list", get_language(context)), parse_mode=ParseMode.HTML)
+	else:
+		context.chat_data["watchlists"].append(list_name)
 	context.chat_data[context.chat_data["active_key"]] = []
 	await context.bot.send_message(chat_id=id, text=msg.get_message("set_list_3", get_language(context)), parse_mode=ParseMode.HTML)
 	return SETLIST_BCBA
@@ -334,12 +342,18 @@ async def default_button_click(update: Update, context: ContextTypes.DEFAULT_TYP
 	if query.data.startswith("l"):
 		await set_language(update, context, query.data)
 	if query.data.startswith("wl"):
-		await context.bot.send_message(chat_id=id, text=msg.get_message("building_list", get_language(context)), parse_mode=ParseMode.HTML)
-		await context.bot.send_message(chat_id=id, text=msg.get_long_wait_emoji(), parse_mode=ParseMode.HTML)
-		data = mk.get_last_info_list(context.chat_data[query.data])
-		message = msg.build_last_info_list_message(data)
-		await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
-		us.add_list(1)
+		if len(context.chat_data[query.data]) > 0:
+			await context.bot.send_message(chat_id=id, text=msg.get_message("building_list", get_language(context)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=id, text=msg.get_long_wait_emoji(), parse_mode=ParseMode.HTML)
+			data = mk.get_last_info_list(context.chat_data[query.data])
+			message = msg.build_last_info_list_message(data)
+			await context.bot.send_message(chat_id=id, text=message, parse_mode=ParseMode.HTML)
+			us.add_list(1)
+		else:
+			await context.bot.send_message(chat_id=id, text=msg.get_message("error_list_2", get_language(context)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=id, text=msg.get_apology(get_language(context)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=id, text=msg.get_emoji("microscope"), parse_mode=ParseMode.HTML)
+			us.add_list(3)
 	else:
 		logging.info("Strange query from button recieved!")
 

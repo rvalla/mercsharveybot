@@ -2,6 +2,10 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-03-11: v0.5.1 beta
+
+Solving a bug related with setting a watchlist with an already used name.  
+
 ## 2024-03-07: v0.5 beta
 
 Now the language preference is saved at *context.chat_data*. The *watchlist* implementation
