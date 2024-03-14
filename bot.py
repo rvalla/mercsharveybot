@@ -157,7 +157,7 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 async def trigger_eraselist(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
 	if not "watchlists" in context.chat_data:
-		users.load_user_data(id, context.chat_data)
+		users.load_user_data(chat_id, context.chat_data)
 	if not context.chat_data == None:
 		keyboard = user_lists_keyboard(context.chat_data["watchlists"])
 		reply = InlineKeyboardMarkup(keyboard)
@@ -232,7 +232,7 @@ async def get_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def user_watchlists(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
 	if not "watchlists" in context.chat_data:
-		users.load_user_data(id, context.chat_data)
+		users.load_user_data(chat_id, context.chat_data)
 	if "watchlists" in context.chat_data:
 		if len(context.chat_data["watchlists"]) > 0:
 			keyboard = user_lists_keyboard(context.chat_data["watchlists"])
@@ -431,7 +431,7 @@ async def error_notification(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
 #Hiding the first numbers of a chat id for the log...
 def hide_id(chat_id):
-	s = str(id)
+	s = str(chat_id)
 	return "****" + s[len(s)-4:]
 
 #Building the general conversation handler...
