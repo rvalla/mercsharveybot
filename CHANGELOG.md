@@ -2,6 +2,12 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-03-13: v0.6 beta
+
+Now using [**Argentina Datos API**](https://argentinadatos.com) to check dólar quotes and other data
+(**El cronista** website apparently blocked the bot).  
+New **/mep** command to get specific dólar quotes.  
+
 ## 2024-03-11: v0.5.1 beta
 
 Solving a bug related with setting a watchlist with an already used name.  

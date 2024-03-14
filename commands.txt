@@ -3,6 +3,7 @@ about - Acerca de las empresas.
 bcba - Consultá la BCBA.
 world - Consultá otros mercados.
 dolar - Consultá distintas cotizaciones.
+mep - Consultá tu símbolo preferido.
 watchlists - Chequeá tus watchlists.
 setwatchlist - Armá tu watchlist.
 erasewatchlist - Eliminá una lista.

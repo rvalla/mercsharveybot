@@ -55,12 +55,12 @@ This little project is possible thanks to a lot of work done by others in the *o
 this case I need to mention:
 
 - [**Python**](https://www.python.org/): the programming language I used.  
-- [**python-telegram-bot**](https://python-telegram-bot.org/): the library I used to contact the *Telegram API*.  
+- [**python-telegram-bot**](https://python-telegram-bot.org/): the library I use to contact the *Telegram API*.  
+- [**ArgentinaDatos API**](https://argentinadatos.com): the api I use to get actual information (dolar, UVA, inflation).  
 
 Data of stock prices are retrieve from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
 seconds to execute each query. The idea is to get some information you need directly the go assuming you can access the
-platform of your choice to get real-time information. Data about us dolar quotes in Argentina are retrive from
-[El Cronista](https://www.cronista.com/MercadosOnline/dolar.html).  
+platform of your choice to get real-time information.  
 
 Reach **MERC's Harvey bot** [here](https://t.me/mercsharvey_bot).
 Feel free to contact me by [mail](mailto:rodrigovalla@protonmail.ch) or reach me in

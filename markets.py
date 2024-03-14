@@ -1,6 +1,8 @@
 import time
 import requests
 import random
+#import matplotlib as plt
+import datetime as dt
 from bs4 import BeautifulSoup
 
 class Markets():
@@ -8,33 +10,46 @@ class Markets():
 
     def __init__(self):
         self.iol = "https://iol.invertironline.com/titulo/cotizacion/"
-        self.cro = "https://www.cronista.com/MercadosOnline/dolar.html"
+        self.arg_api = "https://api.argentinadatos.com/v1/"
         self.dolar_ar = {} #here the class stores dolar quotes in Argentina
+        self.dolar_min_interval = dt.timedelta(minutes=10)
+        self.dolar_update = dt.datetime(year=2020, month=1, day=1)
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
 
     #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
-        self.pause(3,5)
-        page = requests.get(self.cro).text
-        page_soup = BeautifulSoup(page, "html.parser")
-        variation = page_soup.find_all("td", class_="percentage")
-        buy = page_soup.find_all("div", class_="buy-value")
-        sell = page_soup.find_all("div", class_="sell-value")   
-        self.dolar_ar["bna_b"] = self.get_dolar_price(buy[0].text)
-        self.dolar_ar["bna_s"] = self.get_dolar_price(sell[0].text)
-        self.dolar_ar["bna_v"] = self.get_dolar_variation(variation[0].text)
-        self.dolar_ar["blue_b"] = self.get_dolar_price(buy[1].text)
-        self.dolar_ar["blue_s"] = self.get_dolar_price(sell[1].text)
-        self.dolar_ar["blue_v"] = self.get_dolar_variation(variation[1].text)
-        self.dolar_ar["mep_b"] = self.get_dolar_price(buy[2].text)
-        self.dolar_ar["mep_s"] = self.get_dolar_price(sell[2].text)
-        self.dolar_ar["mep_v"] = self.get_dolar_variation(variation[2].text)
-        self.dolar_ar["ccl_b"] = self.get_dolar_price(buy[4].text)
-        self.dolar_ar["ccl_s"] = self.get_dolar_price(sell[4].text)
-        self.dolar_ar["ccl_v"] = self.get_dolar_variation(variation[4].text)
-        self.dolar_ar["mayorista_b"] = self.get_dolar_price(buy[3].text)
-        self.dolar_ar["mayorista_s"] = self.get_dolar_price(sell[3].text)
-        self.dolar_ar["mayorista_v"] = self.get_dolar_variation(variation[3].text)
+        time = dt.datetime.today()
+        if time - self.dolar_update > self.dolar_min_interval:
+            self.dolar_update = time
+            yesterday = time - dt.timedelta(days=1)
+            self.load_dolar_data("oficial", "oficial", time, yesterday)
+            self.load_dolar_data("blue", "blue", time, yesterday)
+            self.load_dolar_data("bolsa", "mep", time, yesterday)
+            self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
+            self.load_dolar_data("mayorista", "mayorista", time, yesterday)
+            self.load_dolar_data("cripto", "cripto", time, yesterday)
+            self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
+
+    #Loading data in dolar_ar...
+    def load_dolar_data(self, api_key, dict_key, today, yesterday):
+        api_url = self.arg_api + "cotizaciones/dolares/" + api_key + "/"
+        dolar_today = requests.get(api_url + self.date_to_url_string(today)).json()
+        dolar_yesterday = requests.get(api_url + self.date_to_url_string(yesterday)).json()
+        self.dolar_ar[dict_key + "_b"] = dolar_today["compra"]
+        self.dolar_ar[dict_key + "_s"] = dolar_today["venta"]
+        self.dolar_ar[dict_key + "_v"] = (dolar_today["venta"] / dolar_yesterday["venta"]) - 1
+
+    #Formating date for api url...
+    def date_to_url_string(self, date):
+        m = str(date.year) + "/"
+        m += "{:02d}".format(date.month) + "/"
+        m += "{:02d}".format(date.day)
+        return m
+
+    #Returning dolar data...
+    def dolar_ar_data(self):
+        self.update_dolar_ar()
+        return self.dolar_ar
 
     #Extracting prices from text...
     def get_dolar_price(self, data):
@@ -122,6 +137,14 @@ class Markets():
             except:
                 pass
         return data
+    
+    #Calculating a custom MEP...
+    def get_mep(self, symbol):
+        mep = None
+        data = self.get_last_info_list([["BCBA", symbol, "ARS"],["BCBA", symbol + "D", "US"]])
+        if len(data) == 2:
+            mep = data[0][2] / data[1][2]
+        return mep 
 
     #Building the correct url for symbol...
     def get_symbol_iol_url(self, exchange, symbol):
@@ -180,6 +203,19 @@ class Markets():
             currency  = self.world[symbol]["currency"]
         return currency
     
+    #Helping with cash or not cash decisions...
+    #def cash_or_not(self, cash_price, financed_price, periods, inflation, interest_rate):
+
+    
+    #def payments_table(self, ):
+
+    #def cash_flows(self, initial_payment, investment, inflation, interest_rate):
+    #    flows = [[],[]]
+        
+
+    #def cash_or_not_chart(self, cash_flows, financed_flows):
+
+
     #Deciding a random pause...
     def pause(self, minimum, maximum):
         t = random.uniform(minimum, maximum)

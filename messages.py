@@ -144,17 +144,30 @@ class Messages():
 	#To format last dolar quotes in Argentina (needs data from Market())...
 	def build_dolar_message(self, dolar, l):
 		m = ""
-		names = [["BNA", "MEP", "CCL", "Blue", "Mayorista"], ["BNA", "MEP", "CCL", "Cash", "Wholesale"]]
+		names = [["Oficial", "MEP", "CCL", "Blue", "Mayorista", "Cripto"], ["Official", "MEP", "CCL", "Cash", "Wholesale", "Cripto"]]
 		m += "<b>" + names[l][1] + "</b>: " +  self.get_price_str("ARS", dolar["mep_s"]) + " "  + \
 				self.get_variation_str(dolar["mep_v"]) + self.get_variation_arrow(dolar["mep_v"]) + "\n"
 		m += "<b>" + names[l][2] + "</b>: " +  self.get_price_str("ARS", dolar["ccl_s"]) + " " + \
 				self.get_variation_str(dolar["ccl_v"]) + self.get_variation_arrow(dolar["ccl_v"]) + "\n\n"
-		m += "<b>" + names[l][0] + "</b>: " +  self.get_price_str("ARS", dolar["bna_b"]) + " - " + self.get_price_str("ARS", dolar["bna_s"]) + " " + \
-				self.get_variation_str(dolar["bna_v"]) + self.get_variation_arrow(dolar["bna_v"]) + "\n"
+		m += "<b>" + names[l][0] + "</b>: " +  self.get_price_str("ARS", dolar["oficial_b"]) + " - " + self.get_price_str("ARS", dolar["oficial_s"]) + " " + \
+				self.get_variation_str(dolar["oficial_v"]) + self.get_variation_arrow(dolar["oficial_v"]) + "\n"
 		m += "<b>" + names[l][3] + "</b>: " +  self.get_price_str("ARS", dolar["blue_b"]) + " - " + self.get_price_str("ARS", dolar["blue_s"]) + " " + \
 				self.get_variation_str(dolar["blue_v"]) + self.get_variation_arrow(dolar["blue_v"]) + "\n"
+		m += "<b>" + names[l][5] + "</b>: " +  self.get_price_str("ARS", dolar["cripto_b"]) + " - " + self.get_price_str("ARS", dolar["cripto_s"]) + " " + \
+				self.get_variation_str(dolar["cripto_v"]) + self.get_variation_arrow(dolar["cripto_v"]) + "\n"
 		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("ARS", dolar["mayorista_s"]) + " " +\
 				self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
+		return m
+
+	#To format a custom MEP message...
+	def build_mep_message(self, symbol, mep, l):
+		m = ""
+		if l == 0:
+			m = "Consulté las cotizaciones actuales de <b>" + symbol + "</b> y <b>" + symbol + "D</b>. "
+			m += "Si la cuentas no me fallan el dólar MEP está ahora a <b>" + self.get_price_str("ARS", mep) + "</b>." 
+		elif l == 1:
+			m = "I checked <b>" + symbol + "</b> and <b>" + symbol + "D</b>. The current value for MEP is "
+			m += "<b>" + self.get_price_str("ARS", mep) + "</b>."
 		return m
 
 	#To format a watchlist...
