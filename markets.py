@@ -22,13 +22,24 @@ class Markets():
         if time - self.dolar_update > self.dolar_min_interval:
             self.dolar_update = time
             yesterday = time - dt.timedelta(days=1)
-            self.load_dolar_data("oficial", "oficial", time, yesterday)
-            self.load_dolar_data("blue", "blue", time, yesterday)
-            self.load_dolar_data("bolsa", "mep", time, yesterday)
-            self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
-            self.load_dolar_data("mayorista", "mayorista", time, yesterday)
-            self.load_dolar_data("cripto", "cripto", time, yesterday)
-            self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
+            try:
+                self.load_dolar_data("oficial", "oficial", time, yesterday)
+                self.load_dolar_data("blue", "blue", time, yesterday)
+                self.load_dolar_data("bolsa", "mep", time, yesterday)
+                self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
+                self.load_dolar_data("mayorista", "mayorista", time, yesterday)
+                self.load_dolar_data("cripto", "cripto", time, yesterday)
+                self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
+            except:
+                time = yesterday
+                yesterday = time - dt.timedelta(days=1)
+                self.load_dolar_data("oficial", "oficial", time, yesterday)
+                self.load_dolar_data("blue", "blue", time, yesterday)
+                self.load_dolar_data("bolsa", "mep", time, yesterday)
+                self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
+                self.load_dolar_data("mayorista", "mayorista", time, yesterday)
+                self.load_dolar_data("cripto", "cripto", time, yesterday)
+                self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
 
     #Loading data in dolar_ar...
     def load_dolar_data(self, api_key, dict_key, today, yesterday):
@@ -38,6 +49,7 @@ class Markets():
         self.dolar_ar[dict_key + "_b"] = dolar_today["compra"]
         self.dolar_ar[dict_key + "_s"] = dolar_today["venta"]
         self.dolar_ar[dict_key + "_v"] = (dolar_today["venta"] / dolar_yesterday["venta"]) - 1
+        self.dolar_ar[dict_key + "_t"] = 
 
     #Formating date for api url...
     def date_to_url_string(self, date):
