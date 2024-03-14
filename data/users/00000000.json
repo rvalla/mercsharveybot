@@ -1,1 +1,1 @@
-{"watchlists": ["list_1", "list_2"], "active_key": "wl_list_2", "wl_list_1": [["BCBA", "BYMA"], ["BCBA", "BBAR"], ["WORLD", "NVDA"]], "wl_list_2": [["BCBA", "YPFD"], ["BCBA", "RICH"], ["WORLD", "DELL"]]}
+{"watchlists": ["list_1", "bbar"], "active_key": "wl_bbar", "wl_list_1": [["BCBA", "ALUA", "ARS"], ["BCBA", "TXAR", "ARS"], ["WORLD", "AAPL", "US"]], "wl_bbar": [["BCBA", "SUPV", "ARS"], ["WORLD", "INTC", "US"]]}

@@ -48,8 +48,8 @@ class Markets():
         dolar_yesterday = requests.get(api_url + self.date_to_url_string(yesterday)).json()
         self.dolar_ar[dict_key + "_b"] = dolar_today["compra"]
         self.dolar_ar[dict_key + "_s"] = dolar_today["venta"]
-        self.dolar_ar[dict_key + "_v"] = (dolar_today["venta"] / dolar_yesterday["venta"]) - 1
-        self.dolar_ar[dict_key + "_t"] = 
+        self.dolar_ar[dict_key + "_v"] = ((dolar_today["venta"] / dolar_yesterday["venta"]) - 1) * 100
+        self.dolar_ar[dict_key + "_t"] = dolar_today["fecha"]
 
     #Formating date for api url...
     def date_to_url_string(self, date):

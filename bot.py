@@ -29,7 +29,7 @@ ABOUT, CHECKING, SETLIST_NAME, SETLIST_BCBA, SETLIST_WORLD, ERASE_LIST, ERASE_LI
 #Welcome message for people who start the bot...
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " started the bot...")
+	logging.info(str(hide_id(chat_id)) + " started the bot...")
 	us.add_start()
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("money_bag"), parse_mode=ParseMode.HTML)
@@ -37,7 +37,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 #Starting an about company session...
 async def trigger_about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " starts about conversation...")
+	logging.info(str(hide_id(chat_id)) + " starts about conversation...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_about", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
 	return ABOUT
@@ -72,7 +72,7 @@ async def get_about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def trigger_check(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
 	exchange = update.message.text.upper().split(" ")[0].split("@")[0][1:]
-	logging.info(str(hide_id(id)) + " starts checking conversation...")
+	logging.info(str(hide_id(chat_id)) + " starts checking conversation...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_check", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
@@ -97,7 +97,7 @@ async def get_last_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 #Starting a watchlist setup session...
 async def trigger_setlist(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " wants to set up a watchlist...")
+	logging.info(str(hide_id(chat_id)) + " wants to set up a watchlist...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("set_list_1", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("set_list_2", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_working_emoji(), parse_mode=ParseMode.HTML)
@@ -147,7 +147,7 @@ async def add_world_symbol_to_list(update: Update, context: ContextTypes.DEFAULT
 			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_set_list", get_language(context)), parse_mode=ParseMode.HTML)
 		return SETLIST_WORLD
 	else:
-		users.save_user_data(id, context.chat_data)
+		users.save_user_data(chat_id, context.chat_data)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("set_list_5", get_language(context)), parse_mode=ParseMode.HTML)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_done_emoji(), parse_mode=ParseMode.HTML)
 		us.add_list(0)
@@ -175,7 +175,7 @@ async def confirm_eraselist(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 	the_list = update.message.text.lower()
 	if context.chat_data["erase_list"] == the_list:
 		erase_list(the_list, context.chat_data)
-		users.save_user_data(id, context.chat_data)
+		users.save_user_data(chat_id, context.chat_data)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("erase_list_3", get_language(context)), parse_mode=ParseMode.HTML)
 		return ConversationHandler.END
 	else:
@@ -207,7 +207,7 @@ async def get_last_dolar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 #Starting a custom MEP session...
 async def trigger_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " starts mep conversation...")
+	logging.info(str(hide_id(chat_id)) + " starts mep conversation...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_mep", get_language(context)), parse_mode=ParseMode.HTML)
 	return MEP
 
@@ -257,7 +257,7 @@ def user_lists_keyboard(list_names: list) -> list:
 #Starting an error report session...
 async def trigger_error_submit(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " wants to report an error...")
+	logging.info(str(hide_id(chat_id)) + " wants to report an error...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_apology(get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("submit_error_1", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("ear"), parse_mode=ParseMode.HTML)
@@ -278,7 +278,7 @@ async def report_error(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 	m2 = update.message.text
 	context.chat_data["error_description"] = m2
 	us.add_error_report()
-	us.save_error_report(m, m2, str(hide_id(id)))
+	us.save_error_report(m, m2, str(hide_id(chat_id)))
 	admin_msg = "Error reported:\n-command: " + m + "\n-description: " + m2
 	await context.bot.send_message(chat_id=config["admin_id"], text=admin_msg, parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("submit_error_3", get_language(context)), parse_mode=ParseMode.HTML)
@@ -288,7 +288,7 @@ async def report_error(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
 #Ending any convertation...
 async def end_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " endss a conversation...")
+	logging.info(str(hide_id(chat_id)) + " endss a conversation...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_conversation_end(get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("end_conversation", get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_done_emoji(), parse_mode=ParseMode.HTML)
@@ -297,7 +297,7 @@ async def end_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE) -
 #Sending a help message...
 async def print_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " asked for help...")
+	logging.info(str(hide_id(chat_id)) + " asked for help...")
 	us.add_help()
 	m = msg.build_help_message(get_language(context))
 	await context.bot.send_message(chat_id=chat_id, text=m, parse_mode=ParseMode.HTML)
@@ -306,7 +306,7 @@ async def print_help(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 #Sending an info message...
 async def print_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " asked for info...")
+	logging.info(str(hide_id(chat_id)) + " asked for info...")
 	us.add_info()
 	m = msg.build_info_message(get_language(context))
 	await context.bot.send_message(chat_id=chat_id, text=m, parse_mode=ParseMode.HTML)
@@ -322,7 +322,7 @@ def get_language(context: ContextTypes.DEFAULT_TYPE) -> None:
 #A commando to allow a user decide which language to use...
 async def select_language(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(id)) + " will set language...")
+	logging.info(str(hide_id(chat_id)) + " will set language...")
 	keyboard = [[InlineKeyboardButton(text="Español", callback_data="l_0"),
 				InlineKeyboardButton(text="English", callback_data="l_1")]]
 	reply = InlineKeyboardMarkup(keyboard)
@@ -332,13 +332,13 @@ async def select_language(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE, query) -> None:
 	chat_id = update.effective_chat.id
 	if query == "l_1":
-		logging.info("English is the language selected by " + str(hide_id(id)))
+		logging.info("English is the language selected by " + str(hide_id(chat_id)))
 		context.chat_data["language"] = 1
 		us.add_language(1)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("language_2", get_language(context)), parse_mode=ParseMode.HTML)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("cocktail"), parse_mode=ParseMode.HTML)
 	else:
-		logging.info("Spanish is the language selected by " + str(hide_id(id)))
+		logging.info("Spanish is the language selected by " + str(hide_id(chat_id)))
 		context.chat_data["language"] = 0
 		us.add_language(0)
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("language_3", get_language(context)), parse_mode=ParseMode.HTML)
@@ -388,7 +388,7 @@ async def bot_usage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 		m = us.build_usage_message()
 		await context.bot.send_message(chat_id=chat_id, text=m, parse_mode=ParseMode.HTML)
 	else:
-		logging.info(hide_id(id) + " wanted to check bot usage data...")
+		logging.info(hide_id(chat_id) + " wanted to check bot usage data...")
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("intruder", get_language(context)), parse_mode=ParseMode.HTML)
 
 #Saving usage data...
@@ -399,7 +399,7 @@ async def save_usage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 		us.save_usage()
 		await context.bot.send_message(chat_id=chat_id, text="¡Datos guardados!", parse_mode=ParseMode.HTML)
 	else:
-		logging.info(hide_id(id) + " wanted to save bot usage data...")
+		logging.info(hide_id(chat_id) + " wanted to save bot usage data...")
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("intruder", get_language(context)), parse_mode=ParseMode.HTML)
 
 #Testing things...
@@ -412,25 +412,25 @@ async def debug(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def out_of_context(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
 	us.add_outofcontext()
-	logging.info(str(hide_id(id)) + " sent out of context message...")
+	logging.info(str(hide_id(chat_id)) + " sent out of context message...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_outofcontext(get_language(context)), parse_mode=ParseMode.HTML)
 
 #Notifying the user about out of context conversation when expecting a button click...
 async def button_wanted(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
 	us.add_outofcontext()
-	logging.info(str(hide_id(id)) + " sent out of context message in a conversation...")
+	logging.info(str(hide_id(chat_id)) + " sent out of context message in a conversation...")
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_button_wanted(get_language(context)), parse_mode=ParseMode.HTML)
 
 #Sending error notification to administrator...
 async def error_notification(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	m = "An error ocurred! While comunicating with chat " + str(hide_id(id))
+	m = "An error ocurred! While comunicating with chat " + str(hide_id(chat_id))
 	logging.info(m)
 	await context.bot.send_message(chat_id=config["admin_id"], text=m, parse_mode=ParseMode.HTML)
 
 #Hiding the first numbers of a chat id for the log...
-def hide_id(id):
+def hide_id(chat_id):
 	s = str(id)
 	return "****" + s[len(s)-4:]
 
