@@ -14,6 +14,7 @@ class Markets():
         self.hoy = "https://dolarhoy.com/"
         self.dolar_ar = {} #here the class stores dolar quotes in Argentina
         self.dolar_min_interval = dt.timedelta(minutes=10)
+        self.dolar_y_min_interval = dt.timedelta(hours=17)
         self.dolar_update = dt.datetime(year=2021, month=1, day=1)
         self.dolar_update_y = dt.datetime(year=2020, month=1, day=1)
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
@@ -21,7 +22,7 @@ class Markets():
      #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
         today = dt.datetime.today()
-        if today - self.dolar_update_y > dt.timedelta(hours=17):
+        if today - self.dolar_update_y > self.dolar_y_min_interval:
             self.update_yesterday_dolar_ar(today)
         if today - self.dolar_update > self.dolar_min_interval:    
             page = requests.get(self.hoy).text
@@ -33,6 +34,7 @@ class Markets():
             self.save_dolar_data("mep", buy[3], sell[3])
             self.save_dolar_data("ccl", buy[4], sell[4])
             self.save_dolar_data("cripto", buy[5], sell[5])
+            self.dolar_update = today
 
     #Extracting dolar values from website...
     def save_dolar_data(self, dict_key, div_buy, div_sell):
@@ -47,15 +49,16 @@ class Markets():
     def update_yesterday_dolar_ar(self, today):
         yesterday = today - dt.timedelta(days=1)
         if not self.dolar_update_y.day == yesterday.day:
-            try:
-                self.load_yesterday_dolar_data("oficial", "oficial", yesterday)
-                self.load_yesterday_dolar_data("blue", "blue", yesterday)
-                self.load_yesterday_dolar_data("bolsa", "mep", yesterday)
-                self.load_yesterday_dolar_data("contadoconliqui", "ccl", yesterday)
-                self.load_yesterday_dolar_data("cripto", "cripto", yesterday)
-                self.dolar_update_y = yesterday
-            except:
-                pass
+            if self.dolar_update - self.dolar_update_y > self.dolar_y_min_interval:
+                try:
+                    self.load_yesterday_dolar_data("oficial", "oficial", yesterday)
+                    self.load_yesterday_dolar_data("blue", "blue", yesterday)
+                    self.load_yesterday_dolar_data("bolsa", "mep", yesterday)
+                    self.load_yesterday_dolar_data("contadoconliqui", "ccl", yesterday)
+                    self.load_yesterday_dolar_data("cripto", "cripto", yesterday)
+                    self.dolar_update_y = yesterday
+                except:
+                    pass
 
     #Loading data in dolar_ar...
     def load_yesterday_dolar_data(self, api_key, dict_key, yesterday):
