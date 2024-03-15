@@ -7,7 +7,7 @@
 	"start_check": "I am ready to receive your favourites symbols. I will try to check its last price.",
 	"info_check": "I am going to check the <b>Invertir Online</b> website. Note that I will wait between 2 and 5 seconds to execute each query.",
 	"error_check": "I couldn't find that symbol. Please check it.",
-	"start_dolar": "Let's see if <b>Argentina Datos</b> API allows me to look for the latest dollar quotes in Argentina.",
+	"start_dolar": "Let's see if <b>Dolar Hoy</b> website allows me to look for the latest dollar exchange rates in Argentina.",
 	"error_dolar": "I could not find anything. The dollar in Argentina is crazy. There may not be any left.",
 	"start_mep": "There a lot of different MEPs. What symbol do you prefer?",
 	"error_mep": "I am sorry but I couldn't calculate the MEP value with that symbol. Send me another one!",

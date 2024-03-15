@@ -7,7 +7,7 @@
 	"start_check": "Estoy listo para recibir los símbolos que te interesen. Intentaré de buscar su cotización más reciente.",
 	"info_check": "Voy a consultar el sitio de <b>Invertir Online</b>. Tené en cuenta que voy a esperar entre 2 y 5 segundos para ejecutar cada consulta.",
 	"error_check": "No logro encontrar el símbolo que enviaste. Tampoco busqué tanto. Fijate si hay algún error.",
-	"start_dolar": "Veamos si la API <b>Argentina Datos</b> me permite buscar las últimas cotizaciones del dólar en Argentina.",
+	"start_dolar": "Veamos si el sitio <b>Dolar Hoy</b> me permite buscar las últimas cotizaciones del dólar en Argentina.",
 	"error_dolar": "No pude encontrar nada. El dólar en Argentina es una locura. Capaz no queda ninguno.",
 	"start_mep": "Existen tantos dólar MEP como símbolos se puedan operar en ambas monedas. ¿Cuál es el símbolo que querés usar?",
 	"error_mep": "Te voy a dejar con la intriga... No logré calcular el dólar MEP con ese símbolo (los más frecuentes son AL30 y GD30). Mandame otro.",

@@ -2,6 +2,11 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-03-14: v0.6.5 beta
+
+Now using [**Dolar Hoy**](https://dolarhoy.com/) in combination with
+[**Argentina Datos API**](https://argentinadatos.com). Some stupid bugs were corrected.  
+
 ## 2024-03-13: v0.6 beta
 
 Now using [**Argentina Datos API**](https://argentinadatos.com) to check dólar quotes and other data

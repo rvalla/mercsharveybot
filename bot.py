@@ -309,7 +309,7 @@ async def print_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 	logging.info(str(hide_id(chat_id)) + " asked for info...")
 	us.add_info()
 	m = msg.build_info_message(get_language(context))
-	await context.bot.send_message(chat_id=chat_id, text=m, parse_mode=ParseMode.HTML)
+	await context.bot.send_message(chat_id=chat_id, text=m, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("keyboard"), parse_mode=ParseMode.HTML)
 
 #Checking which language to use with the actual user...

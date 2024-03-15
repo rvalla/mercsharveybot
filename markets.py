@@ -11,45 +11,57 @@ class Markets():
     def __init__(self):
         self.iol = "https://iol.invertironline.com/titulo/cotizacion/"
         self.arg_api = "https://api.argentinadatos.com/v1/"
+        self.hoy = "https://dolarhoy.com/"
         self.dolar_ar = {} #here the class stores dolar quotes in Argentina
         self.dolar_min_interval = dt.timedelta(minutes=10)
-        self.dolar_update = dt.datetime(year=2020, month=1, day=1)
+        self.dolar_update = dt.datetime(year=2021, month=1, day=1)
+        self.dolar_update_y = dt.datetime(year=2020, month=1, day=1)
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
 
-    #Looking for dolar quotes in Argentina...
+     #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
-        time = dt.datetime.today()
-        if time - self.dolar_update > self.dolar_min_interval:
-            self.dolar_update = time
-            yesterday = time - dt.timedelta(days=1)
+        today = dt.datetime.today()
+        if today - self.dolar_update_y > dt.timedelta(hours=17):
+            self.update_yesterday_dolar_ar(today)
+        if today - self.dolar_update > self.dolar_min_interval:    
+            page = requests.get(self.hoy).text
+            page_soup = BeautifulSoup(page, "html.parser")
+            buy = page_soup.find_all("div", class_="compra")
+            sell = page_soup.find_all("div", class_="venta")
+            self.save_dolar_data("oficial", buy[2], sell[2])
+            self.save_dolar_data("blue", buy[1], sell[1])
+            self.save_dolar_data("mep", buy[3], sell[3])
+            self.save_dolar_data("ccl", buy[4], sell[4])
+            self.save_dolar_data("cripto", buy[5], sell[5])
+
+    #Extracting dolar values from website...
+    def save_dolar_data(self, dict_key, div_buy, div_sell):
+        b = self.get_dolar_price(div_buy.find("div", class_="val").text)
+        s = self.get_dolar_price(div_sell.find("div", class_="val").text)
+        v = (s / self.dolar_ar[dict_key + "_y"] - 1) * 100
+        self.dolar_ar[dict_key + "_b"] = b
+        self.dolar_ar[dict_key + "_s"] = s
+        self.dolar_ar[dict_key + "_v"] = v
+
+    #Looking for dolar quotes in Argentina...
+    def update_yesterday_dolar_ar(self, today):
+        yesterday = today - dt.timedelta(days=1)
+        if not self.dolar_update_y.day == yesterday.day:
             try:
-                self.load_dolar_data("oficial", "oficial", time, yesterday)
-                self.load_dolar_data("blue", "blue", time, yesterday)
-                self.load_dolar_data("bolsa", "mep", time, yesterday)
-                self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
-                self.load_dolar_data("mayorista", "mayorista", time, yesterday)
-                self.load_dolar_data("cripto", "cripto", time, yesterday)
-                self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
+                self.load_yesterday_dolar_data("oficial", "oficial", yesterday)
+                self.load_yesterday_dolar_data("blue", "blue", yesterday)
+                self.load_yesterday_dolar_data("bolsa", "mep", yesterday)
+                self.load_yesterday_dolar_data("contadoconliqui", "ccl", yesterday)
+                self.load_yesterday_dolar_data("cripto", "cripto", yesterday)
+                self.dolar_update_y = yesterday
             except:
-                time = yesterday
-                yesterday = time - dt.timedelta(days=1)
-                self.load_dolar_data("oficial", "oficial", time, yesterday)
-                self.load_dolar_data("blue", "blue", time, yesterday)
-                self.load_dolar_data("bolsa", "mep", time, yesterday)
-                self.load_dolar_data("contadoconliqui", "ccl", time, yesterday)
-                self.load_dolar_data("mayorista", "mayorista", time, yesterday)
-                self.load_dolar_data("cripto", "cripto", time, yesterday)
-                self.load_dolar_data("tarjeta", "tarjeta", time, yesterday)
+                pass
 
     #Loading data in dolar_ar...
-    def load_dolar_data(self, api_key, dict_key, today, yesterday):
+    def load_yesterday_dolar_data(self, api_key, dict_key, yesterday):
         api_url = self.arg_api + "cotizaciones/dolares/" + api_key + "/"
-        dolar_today = requests.get(api_url + self.date_to_url_string(today)).json()
         dolar_yesterday = requests.get(api_url + self.date_to_url_string(yesterday)).json()
-        self.dolar_ar[dict_key + "_b"] = dolar_today["compra"]
-        self.dolar_ar[dict_key + "_s"] = dolar_today["venta"]
-        self.dolar_ar[dict_key + "_v"] = ((dolar_today["venta"] / dolar_yesterday["venta"]) - 1) * 100
-        self.dolar_ar[dict_key + "_t"] = dolar_today["fecha"]
+        self.dolar_ar[dict_key + "_y"] = dolar_yesterday["venta"]
 
     #Formating date for api url...
     def date_to_url_string(self, date):
@@ -65,7 +77,7 @@ class Markets():
 
     #Extracting prices from text...
     def get_dolar_price(self, data):
-        number_str = data.replace("$", "").replace(".", "").replace(",", ".")
+        number_str = data.replace("$", "")
         return float(number_str)
     
     #Extracting variations from text...

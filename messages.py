@@ -144,7 +144,7 @@ class Messages():
 	#To format last dolar quotes in Argentina (needs data from Market())...
 	def build_dolar_message(self, dolar, l):
 		m = ""
-		names = [["Oficial", "MEP", "CCL", "Blue", "Mayorista", "Cripto"], ["Official", "MEP", "CCL", "Cash", "Wholesale", "Cripto"]]
+		names = [["Oficial", "MEP", "CCL", "Blue", "Cripto"], ["Official", "MEP", "CCL", "Cash", "Cripto"]]
 		m += "<b>" + names[l][1] + "</b>: " +  self.get_price_str("ARS", dolar["mep_s"]) + " "  + \
 				self.get_variation_str(dolar["mep_v"]) + self.get_variation_arrow(dolar["mep_v"]) + "\n"
 		m += "<b>" + names[l][2] + "</b>: " +  self.get_price_str("ARS", dolar["ccl_s"]) + " " + \
@@ -153,10 +153,8 @@ class Messages():
 				self.get_variation_str(dolar["oficial_v"]) + self.get_variation_arrow(dolar["oficial_v"]) + "\n"
 		m += "<b>" + names[l][3] + "</b>: " +  self.get_price_str("ARS", dolar["blue_b"]) + " - " + self.get_price_str("ARS", dolar["blue_s"]) + " " + \
 				self.get_variation_str(dolar["blue_v"]) + self.get_variation_arrow(dolar["blue_v"]) + "\n"
-		m += "<b>" + names[l][5] + "</b>: " +  self.get_price_str("ARS", dolar["cripto_b"]) + " - " + self.get_price_str("ARS", dolar["cripto_s"]) + " " + \
+		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("ARS", dolar["cripto_b"]) + " - " + self.get_price_str("ARS", dolar["cripto_s"]) + " " + \
 				self.get_variation_str(dolar["cripto_v"]) + self.get_variation_arrow(dolar["cripto_v"]) + "\n"
-		m += "<b>" + names[l][4] + "</b>: " +  self.get_price_str("ARS", dolar["mayorista_s"]) + " " +\
-				self.get_variation_str(dolar["mayorista_v"]) + self.get_variation_arrow(dolar["mayorista_v"]) + "\n"
 		return m
 
 	#To format a custom MEP message...
@@ -222,6 +220,7 @@ class Messages():
 			m += "pensar este comando como una forma rápida de acceder ahí.\n"
 			m += "> Mandame /world para consultar otros mercados.\n"
 			m += "> Mandame /dolar para consultar sus cotizaciones.\n"
+			m += "> Mandame /mep para calcular el dólar para un instrumento en particular.\n"
 			m += "> Mandame /watchlists para consultar tus listas de seguimiento.\n"
 			m += "> Mandame /setwatchlist para configurar una lista de seguimiento.\n"
 			m += "> Mandame /erasewatchlist para eliminar una lista de seguimiento.\n"
@@ -235,9 +234,12 @@ class Messages():
 			m += "> Send me /bcba to check stocks from the <b>Bolsa de Comercio de Buenos Aires</b>. "
 			m += "I try to read the data from <b>Invertir Online</b> platform. You can think about this "
 			m += "command as a fast way to check that website.\n"
-			m += "> Send me /world to check other exchanges. "
+			m += "> Send me /world to check other exchanges. \n"
+			m += "> Send me /dolar to check exchange rates.\n"
+			m += "> Send me /mep to check a certain instrument.\n"
+			m += "> Send me /watchlists to check your watchlists.\n"
 			m += "> Send me /setwatchlist to set up a watchlist.\n"
-			m += "> Send me /watchlists to check your watchlist.\n"
+			m += "> Send me /erasewatchlist to delete a watchlist.\n"
 			m += "> Send me /cancel to terminate a conversation session.\n"
 			m += "> Send me /error to report whatever error you find on me..\n"
 			m += "> Send me /language to change the language I use.\n"
@@ -251,14 +253,16 @@ class Messages():
 		if l == 0:
 			m += "Soy un bot desarrollado por @rvalla. Mis comandos se inspiran "
 			m += "sobre todo en lo que él necesita para mejorar sus operaciones en el mercado. "
-			m += "Podés escribirle para hacerle llegar cualquier duda o comentario.\n\n"
+			m += "Podés escribirle para hacerle llegar cualquier duda o comentario. "
+			m += "No tengo secretos porque soy de <a href='https://gitlab.com/rodrigovalla/mercsharveybot'>código abierto</a>.\n\n"
 			m += "Mi nombre es un pequeño homenaje a un tal Harvey que en los años sesenta estaba a cargo "
 			m += "de calcular las compensaciones en el <b>Chicago Mercantile Exchange</b>, un mercado "
 			m += "pionero en derivados financieros. Después llegaron las computadoras..."
 		else:
 			m += "I am a bot developed by @rvalla. My commands were built thinking in his own needs "
 			m += "to improve his investment decisions. "
-			m += "Feel free to contact him for any questions or comments.\n\n"
+			m += "Feel free to contact him for any questions or comments. "
+			m += "I have no secrets, I am <a href='https://gitlab.com/rodrigovalla/mercsharveybot'>open source</a>.\n\n"
 			m += "My name is a small tribute to a certain Harvey who in the 1960s was in charge of "
 			m += "calculating offsets on the <b>Chicago Mercantile Exchange</b>, a pioneering financial "
 			m += "derivatives market. Then the computers came..."

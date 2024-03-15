@@ -56,11 +56,12 @@ this case I need to mention:
 
 - [**Python**](https://www.python.org/): the programming language I used.  
 - [**python-telegram-bot**](https://python-telegram-bot.org/): the library I use to contact the *Telegram API*.  
-- [**ArgentinaDatos API**](https://argentinadatos.com): the api I use to get actual information (dolar, UVA, inflation).  
+- [**ArgentinaDatos API**](https://argentinadatos.com): the api I use to get information (dolar, UVA, inflation).  
 
-Data of stock prices are retrieve from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
+Data of stock prices is retrieved from [Invertir Online](https://www.invertironline.com/). The bot waits between 1 and 5
 seconds to execute each query. The idea is to get some information you need directly the go assuming you can access the
-platform of your choice to get real-time information.  
+platform of your choice to get real-time information. Data about dolar-peso exchange rates is retrieved from
+[Dolar Hoy](https://dolarhoy.com/).  
 
 Reach **MERC's Harvey bot** [here](https://t.me/mercsharvey_bot).
 Feel free to contact me by [mail](mailto:rodrigovalla@protonmail.ch) or reach me in
