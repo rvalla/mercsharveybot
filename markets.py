@@ -18,9 +18,6 @@ class Markets():
         self.dolar_update = dt.datetime(year=2021, month=1, day=1)
         self.dolar_update_y = dt.datetime(year=2020, month=1, day=1)
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
-        print(self.bcba["ALUA"])
-        print(self.bcba["CAPX"])
-
 
      #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
