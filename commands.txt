@@ -5,6 +5,7 @@ world - Consultá otros mercados.
 dolar - Consultá distintas cotizaciones.
 mep - Consultá tu símbolo preferido.
 watchlists - Chequeá tus watchlists.
+cashornotcash - That is the question.
 setwatchlist - Armá tu watchlist.
 erasewatchlist - Eliminá una lista.
 cancel - Cancelá una interacción.

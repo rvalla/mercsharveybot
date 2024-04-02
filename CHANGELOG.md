@@ -2,6 +2,15 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-04-01: v0.7 beta
+
+A new **/cashornotcash** command asists users to decide whether or not pay in cash
+for a product. The idea is to ask for the cash price, the financed price, the
+number of installments, anual inflation an interest rate to adjust and compare both
+options.  
+The **/mep** command was improved. Now the user can use buttons to check the more
+common symbols.  
+
 ## 2024-03-14: v0.6.5 beta
 
 Now using [**Dolar Hoy**](https://dolarhoy.com/) in combination with

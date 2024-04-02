@@ -202,19 +202,103 @@ class Messages():
 			n = "U$S{:,.2f}".format(number)
 		return n
 	
+	#To format a generic price...
+	def get_generic_price_str(self, number):
+		return "${:,.2f}".format(number)
+	
 	#To format variation percentage...
 	def get_variation_str(self, number):
 		if number < 0:
 			return "{:3.2f}%".format(number)
 		else:
 			return "+{:3.2f}%".format(number)
+	
+	#To format a percentage from a factor...
+	def factor_to_percentage_str(self, number):
+		p = (number - 1) * 100
+		return "{:,.2f}%".format(p)
+	
+	#To format cashornot start message...
+	def get_cashornot_start(self, l):
+		m = ""
+		if l == 0:
+			m += "Vamos a imaginar que estás por comprar un "
+			m += self.get_random_product(l)
+			m += " y necesitás decidir si pagar al contado o en cuotas.\n"
+			m += "Voy a hacerte unas preguntas para intentar ayudarte."
+		else:
+			m += "Let's imagane that you are about to buy a "
+			m += self.get_random_product(l)
+			m += " and can't decide to pay in cash or in installments..\n"
+			m += "I will ask you some questions to help you."
+		return m
+	
+	#Building end cashornot message...
+	def build_cash_or_not_messages(self, input_data, in_cash, difference, cash_a, financed_a, l):
+		tags = []
+		if l == 0:
+			tags = ["<b>Datos sumistrados</b>","Precio al contado","Precio en cuotas","Cuotas",
+					"Inflación anual","Tasa de interés"]
+		else:
+			tags = ["<b>Input data</b>","In cash price","Financed price","Installments",
+					"Anual inflation","Interest rate"]
+		m1 = tags[0] + ":\n\n"
+		m1 += tags[1] + ": <b>" + self.get_generic_price_str(input_data["cashornot_cash_price"]) + "</b>\n"
+		m1 += tags[2] + ": <b>" + self.get_generic_price_str(input_data["cashornot_financed_price"]) + "</b>\n"
+		m1 += tags[3] + ": <b>" + str(input_data["cashornot_periods"]) + "</b>\n"
+		m1 += tags[4] + ": <b>" + self.factor_to_percentage_str(input_data["cashornot_inflation"]) + "</b>\n"
+		m1 += tags[5] + ": <b>" + self.factor_to_percentage_str(input_data["cashornot_interest_rate"]) + "</b>\n"
+		m2 = ""
+		if l == 0:
+			m2 = "Con los datos que me diste estimo un precio ajustado pagando en efectivo de <b>"
+			m2 += self.get_generic_price_str(abs(cash_a)) + "</b> y un precio ajustado pagando en cuotas de <b>"
+			m2 += self.get_generic_price_str(abs(financed_a)) + "</b> (<b>" + self.get_variation_str(difference*100) + "</b>).\n"
+			m2 += "<b>" + self.msg_es["cash_d" + str(in_cash)] + "</b>"
+		else:
+			m2 = "With the input data you provided I estimate an adjusted cash price of <b>"
+			m2 += self.get_generic_price_str(abs(cash_a)) + "</b> and an adjusted financed price of <b>"
+			m2 += self.get_generic_price_str(abs(financed_a)) + "</b>(<b>" + self.get_variation_str(difference*100) + "</b>).\n"
+			m2 += "<b>" + self.msg_es["cash_d" + str(in_cash)] + "</b>"
+		return m1, m2
+
+	#To get a random producto for cashornot message...
+	def get_random_product(self, l):
+		if l == 0:
+			products = self.msg_es["products"].split(",")
+		else:
+			products = self.msg_en["products"].split(",")
+		return "<b>" + rd.choice(products) + "</b>"
+
+	#To get an int from a user's message:
+	def get_user_int(self, message):
+		number = None
+		try:
+			number = int(message)
+		except:
+			pass
+		return number
+
+	#To get a float from a user's message:
+	def get_user_float(self, message):
+		is_percentage = False
+		number = None
+		if message.endswith("%"):
+			is_percentage = True
+		m = message.replace("$","").replace(",",".").replace("%","")
+		try:
+			number = float(m)
+			if is_percentage:
+				number = 1 + number/100
+		except:
+			pass
+		return is_percentage, number
 
 	#To build help message...
 	def build_help_message(self, l):
 		m = ""
 		if l == 0:
 			m += "Podés pedirme distintas cosas. Acá te dejo los comandos disponibles:\n\n"
-			m += "> Mandame /about para consultar información acerca de tus símbolos preferidos."
+			m += "> Mandame /about para consultar información acerca de tus símbolos preferidos.\n"
 			m += "> Mandame /bcba para consultar la <b>Bolsa de Comercio de Buenos Aires</b>. "
 			m += "Intento leer los datos desde el sitio de <b>Invertir Online</b>. Podés "
 			m += "pensar este comando como una forma rápida de acceder ahí.\n"
@@ -222,6 +306,7 @@ class Messages():
 			m += "> Mandame /dolar para consultar sus cotizaciones.\n"
 			m += "> Mandame /mep para calcular el dólar para un instrumento en particular.\n"
 			m += "> Mandame /watchlists para consultar tus listas de seguimiento.\n"
+			m += "> Mandame /cashornotcash para decidir si comprar en cuotas.\n"
 			m += "> Mandame /setwatchlist para configurar una lista de seguimiento.\n"
 			m += "> Mandame /erasewatchlist para eliminar una lista de seguimiento.\n"
 			m += "> Mandame /cancel para terminar una conversasión.\n"
@@ -231,6 +316,7 @@ class Messages():
 			m += "> Mandame /help para quedarte encerrado en un bucle recursivo."
 		else:
 			m += "You can ask me for different things. Here is a list with the available commands:\n\n"
+			m += "> Send me /about to check if I have information about a symbol.\n"
 			m += "> Send me /bcba to check stocks from the <b>Bolsa de Comercio de Buenos Aires</b>. "
 			m += "I try to read the data from <b>Invertir Online</b> platform. You can think about this "
 			m += "command as a fast way to check that website.\n"
@@ -238,6 +324,7 @@ class Messages():
 			m += "> Send me /dolar to check exchange rates.\n"
 			m += "> Send me /mep to check a certain instrument.\n"
 			m += "> Send me /watchlists to check your watchlists.\n"
+			m += "> Send me /cashornotcash to decide between cash and installments.\n"
 			m += "> Send me /setwatchlist to set up a watchlist.\n"
 			m += "> Send me /erasewatchlist to delete a watchlist.\n"
 			m += "> Send me /cancel to terminate a conversation session.\n"

@@ -24,7 +24,7 @@ msg = Messages() #The class to build content of text messages...
 mk = Markets() #The class to access local and web data about the market...
 users = Users("data/users/")
 ABOUT, CHECKING, SETLIST_NAME, SETLIST_BCBA, SETLIST_WORLD, ERASE_LIST, ERASE_LIST_CONFIRM, \
-	MEP, ERROR_1, ERROR_2 = range(10) #The general conversation states...
+	MEP, CASH_1, CASH_2, CASH_3, CASH_4, CASH_5, ERROR_1, ERROR_2 = range(15) #The general conversation states...
 
 #Welcome message for people who start the bot...
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -191,6 +191,86 @@ def erase_list(list_name: str, chat_data: dict) -> None:
 			break
 	del chat_data["wl_" + list_name]
 
+#Starting a cash or not cash session...
+async def trigger_cashornot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	await context.bot.send_message(chat_id=chat_id, text=msg.get_cashornot_start(get_language(context)), parse_mode=ParseMode.HTML)
+	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_1", get_language(context)), parse_mode=ParseMode.HTML)
+	return CASH_1
+
+#Receiving the pay in cash price...
+async def cash_cash_price(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	is_percentage, number = msg.get_user_float(update.message.text)
+	if not number == None:
+		context.chat_data["cashornot_cash_price"] = number
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_2", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_2
+	else:
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_1
+
+#Receiving the pay in installments price...
+async def cash_financed_price(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	is_percentage, number = msg.get_user_float(update.message.text)
+	if not number == None:
+		if is_percentage:
+			context.chat_data["cashornot_financed_price"] = context.chat_data["cashornot_cash_price"] * number
+		else:
+			context.chat_data["cashornot_financed_price"] = number
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_3", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_3
+	else:
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_2
+
+#Receiving the pay in cash price...
+async def cash_periods(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	number = msg.get_user_int(update.message.text)
+	if not number == None:
+		context.chat_data["cashornot_periods"] = number
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_4", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_4
+	else:
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_3
+
+#Receiving the expected inflation...
+async def cash_inflation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	is_percentage, number = msg.get_user_float(update.message.text)
+	if not number == None:
+		context.chat_data["cashornot_inflation"] = number
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_5", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_5
+	else:
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_4
+
+#Receiving the expected interest rate...
+async def cash_interest_rate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+	chat_id = update.effective_chat.id
+	is_percentage, number = msg.get_user_float(update.message.text)
+	if not number == None:
+		context.chat_data["cashornot_interest_rate"] = number
+		#try:
+		in_cash, difference, cash_a, financed_a, chart = mk.cash_or_not(context.chat_data["cashornot_cash_price"],
+															context.chat_data["cashornot_financed_price"], context.chat_data["cashornot_periods"],
+															context.chat_data["cashornot_inflation"], context.chat_data["cashornot_interest_rate"])
+		m1, m2 = msg.build_cash_or_not_messages(context.chat_data, in_cash, difference, cash_a, financed_a, get_language(context))
+		await context.bot.send_message(chat_id=chat_id, text=m1, parse_mode=ParseMode.HTML)
+		await context.bot.send_message(chat_id=chat_id, text=m2, parse_mode=ParseMode.HTML)
+		await context.bot.send_photo(chat_id=chat_id, photo=chart)
+#		except:
+#			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("fatal_error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+#			await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("bomb"), parse_mode=ParseMode.HTML)
+#		return ConversationHandler.END
+	else:
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+		return CASH_5
+
 #Looking for last data for us dolar quotes in Argentina...
 async def get_last_dolar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
@@ -208,7 +288,12 @@ async def get_last_dolar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 async def trigger_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 	chat_id = update.effective_chat.id
 	logging.info(str(hide_id(chat_id)) + " starts mep conversation...")
-	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_mep", get_language(context)), parse_mode=ParseMode.HTML)
+	keyboard = [[InlineKeyboardButton(text="AL30", callback_data="mep_AL30"),
+				InlineKeyboardButton(text="GD30", callback_data="mep_GD30")],
+				[InlineKeyboardButton(text="AL35", callback_data="mep_AL35"),
+				InlineKeyboardButton(text="GD35", callback_data="mep_GD35")]]
+	reply = InlineKeyboardMarkup(keyboard)
+	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_mep", get_language(context)), reply_markup=reply, parse_mode=ParseMode.HTML)
 	return MEP
 
 #Sending a custom MEP to the user...
@@ -353,6 +438,19 @@ async def conversation_button_click(update: Update, context: ContextTypes.DEFAUL
 		context.chat_data["erase_list"] = query.data.split("_")[1]
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("erase_list_2", get_language(context)), parse_mode=ParseMode.HTML)
 		return ERASE_LIST_CONFIRM
+	elif query.data.startswith("mep"):
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
+		symbol = query.data.split("_")[1]
+		mep = mk.get_mep(symbol)
+		if not mep == None:
+			await context.bot.send_message(chat_id=chat_id, text=msg.build_mep_message(symbol, mep, get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(0)
+			return MEP
+		else:
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_mep_button", get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(1)
+			return MEP
 	else:
 		logging.info("Strange query from button recieved!")
 		return ConversationHandler.END
@@ -441,7 +539,7 @@ def build_general_conversation_handler():
 		entry_points=[CommandHandler("about", trigger_about), CommandHandler("bcba", trigger_check),
 					CommandHandler("world", trigger_check), CommandHandler("setwatchlist", trigger_setlist),
 					CommandHandler("erasewatchlist", trigger_eraselist), CommandHandler("mep", trigger_mep), 
-					CommandHandler("error", trigger_error_submit)],
+					CommandHandler("error", trigger_error_submit), CommandHandler("cashornotcash", trigger_cashornot)],
 		states={
 			ABOUT: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_about)],
 			CHECKING: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_last_info)],
@@ -451,7 +549,13 @@ def build_general_conversation_handler():
 			ERASE_LIST: [CallbackQueryHandler(conversation_button_click),
 						MessageHandler(filters.TEXT & ~filters.COMMAND, button_wanted)],
 			ERASE_LIST_CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, confirm_eraselist)],
-			MEP: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_mep)],
+			MEP: [CallbackQueryHandler(conversation_button_click),
+				MessageHandler(filters.TEXT & ~filters.COMMAND, get_mep)],
+			CASH_1: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_cash_price)],
+			CASH_2: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_financed_price)],
+			CASH_3: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_periods)],
+			CASH_4: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_inflation)],
+			CASH_5: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_interest_rate)],
 			ERROR_1: [MessageHandler(filters.TEXT, report_command)],
 			ERROR_2: [MessageHandler(filters.TEXT & ~filters.COMMAND, report_error)],
 		},

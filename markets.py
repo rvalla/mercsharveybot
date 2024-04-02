@@ -1,8 +1,8 @@
 import time
 import requests
 import random
-#import matplotlib as plt
 import datetime as dt
+import mercscharts as mplt
 from bs4 import BeautifulSoup
 
 class Markets():
@@ -231,17 +231,59 @@ class Markets():
         return currency
     
     #Helping with cash or not cash decisions...
-    #def cash_or_not(self, cash_price, financed_price, periods, inflation, interest_rate):
+    def cash_or_not(self, c_price, f_price, periods, anual_inflation, anual_i_rate):
+        inflation = self.monthly_variation(anual_inflation)
+        i_rate = self.monthly_variation(anual_i_rate)
+        cash_n, cash_a = self.payment_history(f_price, periods, c_price, 0, inflation, i_rate)
+        cash_n_up, cash_a_up = self.payment_history(f_price, periods, c_price, 0, self.add_error(True, inflation), self.add_error(True, i_rate))
+        cash_n_down, cash_a_down = self.payment_history(f_price, periods, c_price, 0, self.add_error(False, inflation), self.add_error(False, i_rate))
+        financed_n, financed_a = self.payment_history(f_price, periods, f_price / periods, f_price / periods, inflation, i_rate)
+        financed_n_up, financed_a_up = self.payment_history(f_price, periods, f_price / periods, f_price / periods, self.add_error(True, inflation), self.add_error(True, i_rate))
+        financed_n_down, financed_a_down = self.payment_history(f_price, periods, f_price / periods, f_price / periods, self.add_error(False, inflation), self.add_error(False, i_rate))
+        chart = mplt.lines_chart(6,4,120,[financed_a, cash_a],[financed_a_down, financed_a_up, cash_a_down, cash_a_up])
+        in_cash, difference = self.decide_cash_or_not(cash_a[periods-1], financed_a[periods-1])
+        return in_cash, difference, cash_a[periods-1], financed_a[periods-1], chart
 
+    #Calculating expense progression (inflation and interest_rate m/m)...
+    def payment_history(self, capital, periods, initial_payment, installment, inflation, interest_rate):
+        investment = capital - initial_payment
+        investment_actual = investment
+        nominal = -capital + investment
+        actual = nominal
+        n_list = [nominal]
+        a_list = [actual]
+        for p in range(periods - 1):
+            investment = investment * interest_rate - installment
+            investment_actual = investment_actual * interest_rate / inflation - installment / pow(inflation, p+1)
+            nominal = -capital + investment
+            actual = -capital + investment_actual
+            n_list.append(nominal)
+            a_list.append(actual)
+        return n_list, a_list
     
-    #def payments_table(self, ):
+    #Deciding if cash is more convenient...
+    def decide_cash_or_not(self, in_cash, financed):
+        ratio = financed / in_cash
+        decision = 2
+        if ratio < 0.97:
+            decision = 1
+        elif ratio > 1.03:
+            decision = 0
+        return decision, ratio-1
 
-    #def cash_flows(self, initial_payment, investment, inflation, interest_rate):
-    #    flows = [[],[]]
-        
-
-    #def cash_or_not_chart(self, cash_flows, financed_flows):
-
+    #Calculating a monthly variation rate from anual one...
+    def monthly_variation(self, anual_rate):
+        return pow(anual_rate, 1/12)
+    
+    #Adding error to rates...
+    def add_error(self, up, rate):
+        variation = rate - 1
+        new_rate = 1
+        if up:
+            new_rate += variation * 1.25
+        else:
+            new_rate += variation * 0.75
+        return new_rate
 
     #Deciding a random pause...
     def pause(self, minimum, maximum):

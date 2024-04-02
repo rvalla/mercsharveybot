@@ -16,6 +16,7 @@ class Usage():
 		self.check = [0,0]
 		self.dolar = [0,0]
 		self.mep = [0,0]
+		self.cashornot = [0,0] #start, success...
 		self.list = [0,0,0,0] #set, check, erase, errors...
 		self.portfolio = [0,0,0,0] #check, buy, sell, errors...
 		self.language = [0,0] #spanish, english...
@@ -33,6 +34,7 @@ class Usage():
 			"check: " + str(self.check) + "\n" + \
 			"dolar: " + str(self.dolar) + "\n" + \
 			"mep: "  + str(self.mep) + "\n" + \
+			"cashornot: " + str(self.cashornot) + "\n" + \
 			"list: " + str(self.list) + "\n" + \
 			"portfolio: " + str(self.portfolio) + "\n" + \
 			"language: " + str(self.language) + "\n" + \
@@ -64,6 +66,7 @@ class Usage():
 		line += str(self.check) + ";"
 		line += str(self.dolar) + ";"
 		line += str(self.mep) + ";"
+		line += str(self.cashornot) + ";"
 		line += str(self.list) + ";"
 		line += str(self.portfolio) + ";"
 		line += str(self.language) + ";"
@@ -93,6 +96,10 @@ class Usage():
 	#Registering a new mep...
 	def add_mep(self, key):
 		self.mep[key] += 1
+	
+	#Registering a new cashornot...
+	def add_cashornot(self, key):
+		self.cashornot[key] += 1
 
 	#Registering a new noise...
 	def add_list(self, key):
