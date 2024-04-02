@@ -250,15 +250,15 @@ class Messages():
 		m1 += tags[5] + ": <b>" + self.factor_to_percentage_str(input_data["cashornot_interest_rate"]) + "</b>\n"
 		m2 = ""
 		if l == 0:
-			m2 = "Con los datos que me diste estimo un precio ajustado pagando en efectivo de <b>"
+			m2 = "Con los datos que me diste, al momento de pagar la última cuota, estimo un precio ajustado pagando en efectivo de <b>"
 			m2 += self.get_generic_price_str(abs(cash_a)) + "</b> y un precio ajustado pagando en cuotas de <b>"
 			m2 += self.get_generic_price_str(abs(financed_a)) + "</b> (<b>" + self.get_variation_str(difference*100) + "</b>).\n"
 			m2 += "<b>" + self.msg_es["cash_d" + str(in_cash)] + "</b>"
 		else:
-			m2 = "With the input data you provided I estimate an adjusted cash price of <b>"
+			m2 = "With the input data you provided, at the time of paying the last installment, I estimate an adjusted cash price of <b>"
 			m2 += self.get_generic_price_str(abs(cash_a)) + "</b> and an adjusted financed price of <b>"
-			m2 += self.get_generic_price_str(abs(financed_a)) + "</b>(<b>" + self.get_variation_str(difference*100) + "</b>).\n"
-			m2 += "<b>" + self.msg_es["cash_d" + str(in_cash)] + "</b>"
+			m2 += self.get_generic_price_str(abs(financed_a)) + "</b> (<b>" + self.get_variation_str(difference*100) + "</b>).\n"
+			m2 += "<b>" + self.msg_en["cash_d" + str(in_cash)] + "</b>"
 		return m1, m2
 
 	#To get a random producto for cashornot message...

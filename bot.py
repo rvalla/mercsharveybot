@@ -196,6 +196,7 @@ async def trigger_cashornot(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 	chat_id = update.effective_chat.id
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_cashornot_start(get_language(context)), parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("cash_1", get_language(context)), parse_mode=ParseMode.HTML)
+	us.add_cashornot(0)
 	return CASH_1
 
 #Receiving the pay in cash price...
@@ -255,18 +256,22 @@ async def cash_interest_rate(update: Update, context: ContextTypes.DEFAULT_TYPE)
 	is_percentage, number = msg.get_user_float(update.message.text)
 	if not number == None:
 		context.chat_data["cashornot_interest_rate"] = number
-		#try:
-		in_cash, difference, cash_a, financed_a, chart = mk.cash_or_not(context.chat_data["cashornot_cash_price"],
+		try:
+			in_cash, difference, cash_a, financed_a, chart = mk.cash_or_not(context.chat_data["cashornot_cash_price"],
 															context.chat_data["cashornot_financed_price"], context.chat_data["cashornot_periods"],
 															context.chat_data["cashornot_inflation"], context.chat_data["cashornot_interest_rate"])
-		m1, m2 = msg.build_cash_or_not_messages(context.chat_data, in_cash, difference, cash_a, financed_a, get_language(context))
-		await context.bot.send_message(chat_id=chat_id, text=m1, parse_mode=ParseMode.HTML)
-		await context.bot.send_message(chat_id=chat_id, text=m2, parse_mode=ParseMode.HTML)
-		await context.bot.send_photo(chat_id=chat_id, photo=chart)
-#		except:
-#			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("fatal_error_cash", get_language(context)), parse_mode=ParseMode.HTML)
-#			await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("bomb"), parse_mode=ParseMode.HTML)
-#		return ConversationHandler.END
+			m1, m2 = msg.build_cash_or_not_messages(context.chat_data, in_cash, difference, cash_a, financed_a, get_language(context))
+			await context.bot.send_message(chat_id=chat_id, text=m1, parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=chat_id, text=m2, parse_mode=ParseMode.HTML)
+			await context.bot.send_photo(chat_id=chat_id, photo=chart)
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("end_conversation", get_language(context)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
+			us.add_cashornot(1)
+		except:
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("fatal_error_cash", get_language(context)), parse_mode=ParseMode.HTML)
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("bomb"), parse_mode=ParseMode.HTML)
+			us.add_cashornot(2)
+		return ConversationHandler.END
 	else:
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_cash", get_language(context)), parse_mode=ParseMode.HTML)
 		return CASH_5
@@ -574,7 +579,7 @@ def main() -> None:
 		logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 	print("Ready to build the bot...", end="\n")
 	app = Application.builder().token(config["token"]).build()
-	#app.add_error_handler(error_notification)
+	app.add_error_handler(error_notification)
 	app.add_handler(build_general_conversation_handler(), group=1)
 	app.add_handler(CallbackQueryHandler(default_button_click), group=1)
 	app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, out_of_context), group=1)

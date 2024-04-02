@@ -18,6 +18,9 @@ class Markets():
         self.dolar_update = dt.datetime(year=2021, month=1, day=1)
         self.dolar_update_y = dt.datetime(year=2020, month=1, day=1)
         self.bcba, self.world = self.load_tickers(open("data/tickers.csv").readlines()[1:])
+        print(self.bcba["ALUA"])
+        print(self.bcba["CAPX"])
+
 
      #Looking for dolar quotes in Argentina...
     def update_dolar_ar(self):
@@ -168,9 +171,10 @@ class Markets():
     #Calculating a custom MEP...
     def get_mep(self, symbol):
         mep = None
-        data = self.get_last_info_list([["BCBA", symbol, "ARS"],["BCBA", symbol + "D", "US"]])
-        if len(data) == 2:
-            mep = data[0][2] / data[1][2]
+        if self.is_symbol_in_database("BCBA", symbol) and self.is_symbol_in_database("BCBA", symbol + "D"):
+            data = self.get_last_info_list([["BCBA", symbol, "ARS"],["BCBA", symbol + "D", "US"]])
+            if len(data) == 2:
+                mep = data[0][2] / data[1][2]
         return mep 
 
     #Building the correct url for symbol...
