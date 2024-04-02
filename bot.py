@@ -57,13 +57,13 @@ async def get_about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 		except:
 			pass #Symbol is not in mk.world dictionary...
 	if data != None and data["ready"] == True:
-		message = msg.build_about_message(get_language(context), data)
+		message = msg.build_about_complete_message(get_language(context), data)
 		us.add_about(0)
 	else:
 		if data == None:
 			message = msg.get_message("error_about", get_language(context))
 		else:
-			message = msg.get_message("refuse_about", get_language(context))
+			message = msg.build_about_incomplete_message(get_language(context), data)
 		us.add_about(1)
 	await context.bot.send_message(chat_id=chat_id, text=message, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 	return ABOUT
@@ -579,7 +579,7 @@ def main() -> None:
 		logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 	print("Ready to build the bot...", end="\n")
 	app = Application.builder().token(config["token"]).build()
-	app.add_error_handler(error_notification)
+	#app.add_error_handler(error_notification)
 	app.add_handler(build_general_conversation_handler(), group=1)
 	app.add_handler(CallbackQueryHandler(default_button_click), group=1)
 	app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, out_of_context), group=1)

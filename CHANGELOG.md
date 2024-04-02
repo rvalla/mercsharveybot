@@ -2,6 +2,12 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-04-02: v0.7.1 beta
+
+Now **/about** command sends the company name if the database is incomplete.  
+The user can send monthly rates inside **/cashornotcash** conversation.  
+The database was updated.  
+
 ## 2024-04-01: v0.7 beta
 
 A new **/cashornotcash** command asists users to decide whether or not to pay in cash

@@ -104,13 +104,25 @@ class Messages():
 		return self.get_emoji(rd.choice(self.long_waits_emoji))
 	
 	#To format a symbol about message (needs data from Market())...
-	def build_about_message(self, l, data):
-		m = self.get_symbol_name_str(data["symbol"], data["name"], data["cedear_ratio"])
+	def build_about_complete_message(self, l, data):
+		m = self.get_symbol_name_str(data["symbol"], data["name"], data["cedear_ratio"]) + "\n\n"
 		if l == 0:
 			m += data["about_es"]
 		else:
 			m += data["about_en"]
 		m += "\n" + data["url"]
+		return m
+	
+	#To format a symbol about message (needs data from Market())...
+	def build_about_incomplete_message(self, l, data):
+		m = ""
+		if l == 0:
+			m = "No puedo decirte nada interesante de ese símbolo. Sólo me sé el nombre:\n\n"
+		else:
+			m = "I can't tell you anything about that symbol. I know the company name though:\n\n"
+		m += self.get_symbol_name_str(data["symbol"], data["name"], data["cedear_ratio"])
+		if not data["url"] == "https://thiswillbean.url":
+			m += "\n" + data["url"]
 		return m
 	
 	#To format a symbol last info message (needs data from Market())...
@@ -190,7 +202,6 @@ class Messages():
 		m = "<b>" + name + " (" + symbol + ")</b>"
 		if not cedear_ratio == "-":
 			m += "\n<i>Cedear (Ratio " + cedear_ratio + ")</i>"
-		m += "\n\n"
 		return m
 
 	#To format last price...
@@ -282,6 +293,10 @@ class Messages():
 	def get_user_float(self, message):
 		is_percentage = False
 		number = None
+		monthly = False
+		if message.endswith("m/m"):
+			monthly = True
+			message = message.replace("m/m","")
 		if message.endswith("%"):
 			is_percentage = True
 		m = message.replace("$","").replace(",",".").replace("%","")
@@ -289,6 +304,8 @@ class Messages():
 			number = float(m)
 			if is_percentage:
 				number = 1 + number/100
+			if monthly:
+				number = pow(number,12)
 		except:
 			pass
 		return is_percentage, number
