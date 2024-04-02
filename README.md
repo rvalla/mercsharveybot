@@ -7,24 +7,29 @@ tools to help with investment decisions.
 
 ## online status
 
-[**MERC's Harvey bot**](https://t.me/mercsharvey_bot) is currently on development. From time to time it will
-be running in a *virtual machine* from [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/).  
+[**MERC's Harvey bot**](https://t.me/mercsharvey_bot) is currently on development. It will
+be running in a *virtual machine* from [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)
+most of the time.  
 
 ## commands
 
 Here you can see the list of available commands. Some of them allow you to pass parameters.
 
 - **/start**: returns simply a gretting.  
-- **/about**: to check information in the database.
-- **/bcba**: set up a session to check stocks in Buenos Aires.  
-- **/world**: set up a session to check international stocks.  
-- **/dolar**: to check last us dolar prices in Argentina.
-- **/setlist**: to set up a watchlist.  
-- **/list**: to check the saved watchlist.  
+- **/about**: to check information in the database.  
+- **/bcba**: set up a session to check stocks in Buenos Aires.   
+- **/world**: set up a session to check international stocks.    
+- **/dolar**: to check last us dolar prices in Argentina.  
+- **/mep**: to check a custom MEP dolar price.  
+- **/watchlists**: to check your watchlists.  
+- **/cashornotcash**: to help deciding to pay or not to pay in cash.  
+- **/setwatchlist**: to set a new watchlist.  
+- **/erasewatchlist**: to delete a watchlist.  
+- **/cancel**: to terminate conversation sessions.  
+- **/error**: to report an error.  
+- **/language**: to set the language.  
 - **/info**: to known more about the bot.  
 - **/help**: returns some explanations.  
-- **/language**: to set the language.  
-- **/cancel**: to terminate conversation sessions.  
 
 ## running the code
 
