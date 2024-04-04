@@ -24,7 +24,7 @@ msg = Messages() #The class to build content of text messages...
 mk = Markets() #The class to access local and web data about the market...
 users = Users("data/users/")
 ABOUT, CHECKING, SETLIST_NAME, SETLIST_BCBA, SETLIST_WORLD, ERASE_LIST, ERASE_LIST_CONFIRM, \
-	MEP, CASH_1, CASH_2, CASH_3, CASH_4, CASH_5, ERROR_1, ERROR_2 = range(15) #The general conversation states...
+	CASH_1, CASH_2, CASH_3, CASH_4, CASH_5, ERROR_1, ERROR_2 = range(14) #The general conversation states...
 
 #Welcome message for people who start the bot...
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -289,34 +289,28 @@ async def get_last_dolar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_dolar", get_language(context)), parse_mode=ParseMode.HTML)
 		us.add_dolar(1)
 
-#Starting a custom MEP session...
-async def trigger_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+#Sending options for mep...
+async def get_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	chat_id = update.effective_chat.id
-	logging.info(str(hide_id(chat_id)) + " starts mep conversation...")
-	keyboard = [[InlineKeyboardButton(text="AL30", callback_data="mep_AL30"),
-				InlineKeyboardButton(text="GD30", callback_data="mep_GD30")],
-				[InlineKeyboardButton(text="AL35", callback_data="mep_AL35"),
-				InlineKeyboardButton(text="GD35", callback_data="mep_GD35")]]
-	reply = InlineKeyboardMarkup(keyboard)
-	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_mep", get_language(context)), reply_markup=reply, parse_mode=ParseMode.HTML)
-	return MEP
-
-#Sending a custom MEP to the user...
-async def get_mep(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-	chat_id = update.effective_chat.id
-	symbol = update.message.text.upper()
-	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
-	await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
-	mep = mk.get_mep(symbol)
-	if not mep == None:
-		await context.bot.send_message(chat_id=chat_id, text=msg.build_mep_message(symbol, mep, get_language(context)), parse_mode=ParseMode.HTML)
-		await context.bot.send_message(chat_id=chat_id, text=msg.get_conversation_end(get_language(context)), parse_mode=ParseMode.HTML)
-		us.add_mep(0)
-		return ConversationHandler.END
+	message = update.message.text.split(" ")
+	if len(message) == 1:
+		keyboard = [[InlineKeyboardButton(text="AL30", callback_data="mep_AL30"),
+					InlineKeyboardButton(text="GD30", callback_data="mep_GD30")],
+					[InlineKeyboardButton(text="AL35", callback_data="mep_AL35"),
+					InlineKeyboardButton(text="GD35", callback_data="mep_GD35")]]
+		reply = InlineKeyboardMarkup(keyboard)
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("start_mep", get_language(context)), reply_markup=reply, parse_mode=ParseMode.HTML)
 	else:
-		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_mep", get_language(context)), parse_mode=ParseMode.HTML)
-		us.add_mep(1)
-		return MEP
+		symbol = message[1].upper()
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
+		mep = mk.get_mep(symbol)
+		if not mep == None:
+			await context.bot.send_message(chat_id=chat_id, text=msg.build_mep_message(symbol, mep, get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(1)
+		else:
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_mep", get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(2)
 
 #Sending an updated watchlist to the user...
 async def user_watchlists(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -443,19 +437,6 @@ async def conversation_button_click(update: Update, context: ContextTypes.DEFAUL
 		context.chat_data["erase_list"] = query.data.split("_")[1]
 		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("erase_list_2", get_language(context)), parse_mode=ParseMode.HTML)
 		return ERASE_LIST_CONFIRM
-	elif query.data.startswith("mep"):
-		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
-		await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
-		symbol = query.data.split("_")[1]
-		mep = mk.get_mep(symbol)
-		if not mep == None:
-			await context.bot.send_message(chat_id=chat_id, text=msg.build_mep_message(symbol, mep, get_language(context)), parse_mode=ParseMode.HTML)
-			us.add_mep(0)
-			return MEP
-		else:
-			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_mep_button", get_language(context)), parse_mode=ParseMode.HTML)
-			us.add_mep(1)
-			return MEP
 	else:
 		logging.info("Strange query from button recieved!")
 		return ConversationHandler.END
@@ -467,7 +448,7 @@ async def default_button_click(update: Update, context: ContextTypes.DEFAULT_TYP
 	await query.answer()
 	if query.data.startswith("l"):
 		await set_language(update, context, query.data)
-	if query.data.startswith("wl"):
+	elif query.data.startswith("wl"):
 		if len(context.chat_data[query.data]) > 0:
 			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("building_list", get_language(context)), parse_mode=ParseMode.HTML)
 			await context.bot.send_message(chat_id=chat_id, text=msg.get_long_wait_emoji(), parse_mode=ParseMode.HTML)
@@ -480,6 +461,17 @@ async def default_button_click(update: Update, context: ContextTypes.DEFAULT_TYP
 			await context.bot.send_message(chat_id=chat_id, text=msg.get_apology(get_language(context)), parse_mode=ParseMode.HTML)
 			await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("microscope"), parse_mode=ParseMode.HTML)
 			us.add_list(3)
+	elif query.data.startswith("mep"):
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_message("info_check", get_language(context)), parse_mode=ParseMode.HTML)
+		await context.bot.send_message(chat_id=chat_id, text=msg.get_analysis_emoji(), parse_mode=ParseMode.HTML)
+		symbol = query.data.split("_")[1]
+		mep = mk.get_mep(symbol)
+		if not mep == None:
+			await context.bot.send_message(chat_id=chat_id, text=msg.build_mep_message(symbol, mep, get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(0)
+		else:
+			await context.bot.send_message(chat_id=chat_id, text=msg.get_message("error_mep_button", get_language(context)), parse_mode=ParseMode.HTML)
+			us.add_mep(2)
 	else:
 		logging.info("Strange query from button recieved!")
 
@@ -543,8 +535,8 @@ def build_general_conversation_handler():
 	handler = ConversationHandler(
 		entry_points=[CommandHandler("about", trigger_about), CommandHandler("bcba", trigger_check),
 					CommandHandler("world", trigger_check), CommandHandler("setwatchlist", trigger_setlist),
-					CommandHandler("erasewatchlist", trigger_eraselist), CommandHandler("mep", trigger_mep), 
-					CommandHandler("error", trigger_error_submit), CommandHandler("cashornotcash", trigger_cashornot)],
+					CommandHandler("erasewatchlist", trigger_eraselist), CommandHandler("cashornotcash", trigger_cashornot),
+					CommandHandler("error", trigger_error_submit)],
 		states={
 			ABOUT: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_about)],
 			CHECKING: [MessageHandler(filters.TEXT & ~filters.COMMAND, get_last_info)],
@@ -554,8 +546,6 @@ def build_general_conversation_handler():
 			ERASE_LIST: [CallbackQueryHandler(conversation_button_click),
 						MessageHandler(filters.TEXT & ~filters.COMMAND, button_wanted)],
 			ERASE_LIST_CONFIRM: [MessageHandler(filters.TEXT & ~filters.COMMAND, confirm_eraselist)],
-			MEP: [CallbackQueryHandler(conversation_button_click),
-				MessageHandler(filters.TEXT & ~filters.COMMAND, get_mep)],
 			CASH_1: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_cash_price)],
 			CASH_2: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_financed_price)],
 			CASH_3: [MessageHandler(filters.TEXT & ~filters.COMMAND, cash_periods)],
@@ -585,6 +575,7 @@ def main() -> None:
 	app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, out_of_context), group=1)
 	app.add_handler(CommandHandler("start", start), group=2)
 	app.add_handler(CommandHandler("dolar", get_last_dolar), group=2)
+	app.add_handler(CommandHandler("mep", get_mep), group=2)
 	app.add_handler(CommandHandler("watchlists", user_watchlists), group=2)
 	app.add_handler(CommandHandler("language", select_language), group=2)
 	app.add_handler(CommandHandler("help", print_help), group=2)
