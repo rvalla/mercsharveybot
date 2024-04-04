@@ -2,6 +2,12 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2024-04-02: v0.7.5 beta
+
+Now **/mep** command is out any conversation handler. The buttons works in any moment.
+The user has to send the command followed by a symbol to get a custom MEP (**/mep GD41**).  
+The database was updated.  
+
 ## 2024-04-02: v0.7.1 beta
 
 Now **/about** command sends the company name if the database is incomplete.  
