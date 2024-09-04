@@ -80,7 +80,7 @@ class Markets():
 
     #Extracting prices from text...
     def get_dolar_price(self, data):
-        number_str = data.replace("$", "")
+        number_str = data.replace("$", "").replace(",",".")
         return float(number_str)
     
     #Extracting variations from text...
