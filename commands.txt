@@ -13,3 +13,4 @@ error - Reportá un error.
 language - Elegí qué idioma uso.
 info - Enterate más.
 help - Pedí ayuda.
+privacy - Sobre los datos que guardo.

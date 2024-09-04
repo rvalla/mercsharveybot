@@ -44,5 +44,6 @@
 	"submit_error_3": "Thank you so much for taking a minute to make me better. Hopefully @rvalla will fix me soon.",
 	"products": "supersonic boat,private jet,toy car,painting by a drank painter,drum set,technical analysis book,spatial elevator,huge whisky bottle",
 	"end_conversation": "I terminated our conversation sesion.",
+	"privacy": "Don't worry! I only save essential data (watchlists, language preferences and imaginary portfolios). I don't even remember your username (I link your data to the chat id).",
 	"intruder": "This is a secret command. You are not authorized to use it."
 }

@@ -44,5 +44,6 @@
 	"submit_error_3": "Muchas gracias por tomarte un minuto para mejorarme. Esperemos que @rvalla me arregle pronto.",
 	"products": "bote supersónico,avión privado,auto de juguete,cuadro de un pintor borracho,bombo legüero,taladro con percutor,libro de análisis técnico,ascensor espacial",
 	"end_conversation": "Doy por terminada nuestra conversación.",
+	"privacy": "¡No tenés que preocuparte por mí! Sólo guardo datos indispensables (listas de seguimiento, portfolios imaginarios y preferencias de idioma). No recurdo ni siquiera tu nombre de usuario (asocio tus dato al id del chat).",
 	"intruder": "No tenés autorización para ejecutar ese comando."
 }

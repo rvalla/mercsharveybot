@@ -396,6 +396,13 @@ async def print_info(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
 	await context.bot.send_message(chat_id=chat_id, text=m, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
 	await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("keyboard"), parse_mode=ParseMode.HTML)
 
+#Sending privacy policy...
+async def print_privacy(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+	chat_id = update.effective_chat.id
+	us.add_privacy()
+	await context.bot.send_message(chat_id=chat_id, text=msg.get_message("privacy", get_language(context)), parse_mode=ParseMode.HTML)
+	await context.bot.send_message(chat_id=chat_id, text=msg.get_emoji("lock"), parse_mode=ParseMode.HTML)
+
 #Checking which language to use with the actual user...
 def get_language(context: ContextTypes.DEFAULT_TYPE) -> None:
 	if "language" in context.chat_data:
@@ -580,6 +587,7 @@ def main() -> None:
 	app.add_handler(CommandHandler("language", select_language), group=2)
 	app.add_handler(CommandHandler("help", print_help), group=2)
 	app.add_handler(CommandHandler("info", print_info), group=2)
+	app.add_handler(CommandHandler("privacy", print_privacy), group=2)
 	app.add_handler(CommandHandler("botusage", bot_usage), group=2)
 	app.add_handler(CommandHandler("saveusage", save_usage), group=2)
 	app.add_handler(CommandHandler("debug", debug), group=2)

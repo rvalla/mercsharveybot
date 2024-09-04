@@ -22,6 +22,7 @@ class Usage():
 		self.language = [0,0] #spanish, english...
 		self.help = 0
 		self.info = 0
+		self.privacy = 0
 		self.out_of_context = 0
 		self.reports = 0
 		self.errors = 0
@@ -40,6 +41,7 @@ class Usage():
 			"language: " + str(self.language) + "\n" + \
 			"help: " + str(self.help) + "\n" + \
 			"info: " + str(self.info) + "\n" + \
+			"privacy: " + str(self.privacy) + "\n" + \
 			"out of context: " + str(self.out_of_context) + "\n" + \
 			"error reports: " + str(self.reports) + "\n" + \
 			"errors: " + str(self.errors) + "\n"
@@ -72,6 +74,7 @@ class Usage():
 		line += str(self.language) + ";"
 		line += str(self.help) + ";"
 		line += str(self.info) + ";"
+		line += str(self.privacy) + ";"
 		line += str(self.out_of_context) + ";"
 		line += str(self.reports) + ";"
 		line += str(self.errors) + "\n"
@@ -120,6 +123,10 @@ class Usage():
 	#Registering a new info...
 	def add_info(self):
 		self.info += 1
+
+	#Registering a new privacy...
+	def add_privacy(self):
+		self.privacy += 1
 
 	#Registering a new wrong_message...
 	def add_outofcontext(self):
