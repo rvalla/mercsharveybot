@@ -1,1 +1,9 @@
 Logging history...
+2024-09-04 02:52:15,203 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot5997803246:AAH9uengaj36ni9oNJSHX4dtGc4VGY6jabg/getMe "HTTP/1.1 200 OK"
+2024-09-04 02:52:15,395 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot5997803246:AAH9uengaj36ni9oNJSHX4dtGc4VGY6jabg/deleteWebhook "HTTP/1.1 200 OK"
+2024-09-04 02:52:15,397 - telegram.ext.Application - INFO - Application started
+2024-09-04 02:52:43,279 - root - INFO - ****8891 will set language...
+024-09-04 02:52:45,603 - root - INFO - English is the language selected by ****8891
+2024-09-04 02:53:34,348 - root - INFO - Spanish is the language selected by ****8891
+2025-10-06 21:36:20,530 - telegram.ext.Application - INFO - Application is stopping. This might take a moment.
+2025-10-06 21:36:20,531 - telegram.ext.Application - INFO - Application.stop() complete
