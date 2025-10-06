@@ -1,6 +1,4 @@
 Logging history...
-2024-09-04 02:52:15,203 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot5997803246:AAH9uengaj36ni9oNJSHX4dtGc4VGY6jabg/getMe "HTTP/1.1 200 OK"
-2024-09-04 02:52:15,395 - httpx - INFO - HTTP Request: POST https://api.telegram.org/bot5997803246:AAH9uengaj36ni9oNJSHX4dtGc4VGY6jabg/deleteWebhook "HTTP/1.1 200 OK"
 2024-09-04 02:52:15,397 - telegram.ext.Application - INFO - Application started
 2024-09-04 02:52:43,279 - root - INFO - ****8891 will set language...
 024-09-04 02:52:45,603 - root - INFO - English is the language selected by ****8891
