@@ -2,6 +2,11 @@
 
 # MERC's Harvey Bot: changelog
 
+## 2026-05-16: v0.7.6 beta
+
+New tickers added to the database.  
+Correcting error in **/dolar** taking into account changes in [dolarhoy.com](https://dolarhoy.com).  
+
 ## 2024-04-02: v0.7.5 beta
 
 Now **/mep** command is out any conversation handler. The buttons works in any moment.

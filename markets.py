@@ -33,7 +33,7 @@ class Markets():
             self.save_dolar_data("blue", buy[1], sell[1])
             self.save_dolar_data("mep", buy[3], sell[3])
             self.save_dolar_data("ccl", buy[4], sell[4])
-            self.save_dolar_data("cripto", buy[6], sell[6])
+            self.save_dolar_data("cripto", buy[5], sell[5])
             self.dolar_update = today
 
     #Extracting dolar values from website...
